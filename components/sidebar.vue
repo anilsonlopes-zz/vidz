@@ -43,7 +43,11 @@
           {{ item.name }}
         </span>
       </nuxt-link>
-      <button type="button" class="flex items-center text-sm no-underline py-2">
+      <button
+        type="button"
+        class="flex items-center text-sm no-underline py-2"
+        @click="logout"
+      >
         <i class="fa fa-sign-out text-grey-dark" />
         <span class="ml-2 text-black hover:text-red font-medium">
           Sair
@@ -95,6 +99,15 @@ export default {
         class: 'fa-user'
       }
     ]
-  })
+  }),
+  methods: {
+    logout() {
+      if (window.confirm('Deseja desconectar?')) {
+        this.$store.dispatch('logout').then(() => {
+          this.$store.commit('notification', { type: 'info', message: 'Desconectado!? Ver se não esquece a senha.' })
+        })
+      }
+    }
+  }
 }
 </script>
