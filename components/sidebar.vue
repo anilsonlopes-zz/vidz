@@ -69,17 +69,17 @@ export default {
     libraryMenu: [
       {
         name: 'Assistidos',
-        to: { name: 'library', query: { type: 'watched' } },
+        to: { name: 'library', query: { slug: 'watched' } },
         icon: 'fa-check'
       },
       {
         name: 'Favoritos',
-        to: { name: 'library', query: { type: 'liked' } },
+        to: { name: 'library', query: { slug: 'liked' } },
         icon: 'fa-heart-o'
       },
       {
         name: 'Quero assistir',
-        to: { name: 'library', query: { type: 'watch-later' } },
+        to: { name: 'library', query: { slug: 'watch-later' } },
         icon: 'fa-clock-o'
       }
     ],
