@@ -84,6 +84,12 @@ export default {
   transition: 'fadeInBottom',
   layout: 'tube',
   queryQuery: ['nameResult'],
+  head() {
+    return {
+      title: this.post.title,
+      titleTemplate: 'vidz - %s'
+    }
+  },
   data: () => ({
     post: {},
     stats: {

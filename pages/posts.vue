@@ -49,7 +49,7 @@ import { parseQuery } from '~/plugins/filters.js'
 export default {
   transition: 'fadeInBottom',
   head: {
-    title: 'Busca'
+    title: 'Assista'
   },
   watchQuery: ['type'],
   layout: 'tube',
