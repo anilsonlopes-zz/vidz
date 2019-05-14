@@ -43,7 +43,11 @@
           {{ item.name }}
         </span>
       </nuxt-link>
-      <button type="button" class="flex items-center text-sm no-underline py-2">
+      <button
+        type="button"
+        class="flex items-center text-sm no-underline py-2"
+        @click="logout"
+      >
         <i class="fa fa-sign-out text-grey-dark" />
         <span class="ml-2 text-black hover:text-red font-medium">
           Sair
@@ -69,17 +73,17 @@ export default {
     libraryMenu: [
       {
         name: 'Assistidos',
-        to: { name: 'library', query: { type: 'watched' } },
+        to: { name: 'library', query: { slug: 'watched' } },
         icon: 'fa-check'
       },
       {
         name: 'Favoritos',
-        to: { name: 'library', query: { type: 'liked' } },
+        to: { name: 'library', query: { slug: 'liked' } },
         icon: 'fa-heart-o'
       },
       {
         name: 'Quero assistir',
-        to: { name: 'library', query: { type: 'watch-later' } },
+        to: { name: 'library', query: { slug: 'watch-later' } },
         icon: 'fa-clock-o'
       }
     ],
@@ -95,6 +99,15 @@ export default {
         class: 'fa-user'
       }
     ]
-  })
+  }),
+  methods: {
+    logout() {
+      if (window.confirm('Deseja desconectar?')) {
+        this.$store.dispatch('logout').then(() => {
+          this.$store.commit('notification', { type: 'info', message: 'Desconectado!? Ver se não esquece a senha.' })
+        })
+      }
+    }
+  }
 }
 </script>

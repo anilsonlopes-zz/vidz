@@ -29,7 +29,7 @@
             {{ post.genre }}
           </div>
           <div class="hidden md:block py-1 text-grey">
-            Atores: {{ post.actors }}
+            Estrelando: {{ post.actors }}
           </div>
           <div class="pt-3 pb-1 text-grey">
             <span class="shadow-inner transition rounded py-2 inline-block px-3 text-grey-dark">
@@ -84,6 +84,12 @@ export default {
   transition: 'fadeInBottom',
   layout: 'tube',
   queryQuery: ['nameResult'],
+  head() {
+    return {
+      title: this.post.title,
+      titleTemplate: 'vidz - %s'
+    }
+  },
   data: () => ({
     post: {},
     stats: {

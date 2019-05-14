@@ -11,7 +11,7 @@
         :key="item.id"
         class="inline-block w-32 lg:w-1/6 xxl:w-64 mb-4 px-1 no-underline"
         :class="transition ? 'animated fadeIn fast' : ''"
-        :style="transition ? { 'animation-delay': `${index}00ms` } : {}"
+        :style="transition ? { 'animation-delay': `${index}00ms`, 'pointer-events': !item.slug ? 'none' : '' } : {}"
         :to="{ name: 'post-slug', params: { slug: item.slug } }"
       >
         <div
