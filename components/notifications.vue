@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed pin-r pin-b z-50 px-4 flex flex-col items-end">
+  <div class="fixed pin-l pin-b z-50 px-4 flex flex-col items-start">
     <nf-notification
       v-for="(notification, index) in notifications"
       :key="index"
@@ -10,10 +10,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import NfNotification from '~/components/NfNotification'
 
 export default {
-  components: { NfNotification },
+  components: {
+    NfNotification: () => import('~/components/notification')
+  },
   computed: {
     ...mapGetters(['notifications'])
   }

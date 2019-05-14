@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded py-2 px-4 mb-4 animated bounceInRight faster shadow" :class="className">
+  <div class="rounded py-2 px-4 mb-4 animated bounceInUp faster shadow" :class="className">
     <span class="select-none text-sm">
       {{ notification.message }}
     </span>
