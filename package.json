@@ -1,8 +1,8 @@
 {
   "name": "vidz",
   "version": "1.0.0",
-  "description": "My copy of NetFlix",
-  "author": "Anilson Lopes",
+  "description": "Plataforma sobre mídia digital",
+  "author": "Anilson Lopes <contato@quila.dev>",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
