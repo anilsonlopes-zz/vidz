@@ -59,13 +59,13 @@
               v-for="(library, index) in libraries"
               :key="index"
               class="ml-5 flex items-center text-sm py-2 px-3 border border-grey-lighter hover:bg-grey-lighter transition rounded focus:outline-none focus:shadow-md"
-              :class="{ 'bg-grey-darkest text-white': post.libraries.find(row => row.slug == library.slug && row.userId == auth.uid)}"
+              :class="{ 'bg-grey-darkest text-white': authHaveThisLibrary(library)}"
               :title="library.label"
               type="button"
               @click="handleLibrary(library)"
             >
               <span class="inline-block pr-1 font-medium font-mono text-xs">
-                {{ post.libraries.filter(row => row.slug == library.slug).length }}
+                {{ countThisLibrary(library) }}
               </span>
               <i class="fa" :class="`${library.icon}`" />
             </button>
@@ -125,27 +125,40 @@ export default {
     return { post: data[0] }
   },
   methods: {
-    async handleLibrary(library) {
+    handleLibrary(library) {
       const librarySaved = this.post.libraries.find(rowLib => rowLib.userId === this.auth.uid && rowLib.slug === library.slug)
       if (librarySaved) {
         // remove da library
-        await this.$axios.$delete(`//localhost:3001/libraries/${librarySaved.id}`)
-        this.$router.replace({ query: { nameResult: 'removedLibrary', library: library.slug } })
-        this.$store.commit('notification', { message: `Removido de ${library.label.toLowerCase()}`, type: 'default' })
+        this.removeLibraryFromUser(library, librarySaved)
       } else {
         // add library
-        const libraryData = new Library({
+        this.addLibraryFromUser(library)
+      }
+    },
+    authHaveThisLibrary(library) {
+      return this.post.libraries.find(row => row.slug === library.slug && row.userId === this.auth.uid)
+    },
+    countThisLibrary(library) {
+      return this.post.libraries.filter(row => row.slug === library.slug).length
+    },
+    async removeLibraryFromUser(library, librarySaved) {
+      await this.$axios.$delete(`//localhost:3001/libraries/${librarySaved.id}`)
+      this.post.libraries.splice(this.post.libraries.indexOf(librarySaved), 1)
+      this.$store.commit('notification', { message: `Removido de ${library.label.toLowerCase()}`, type: 'default' })
+    },
+    async addLibraryFromUser(library) {
+      try {
+        const newLibrary = new Library({
           id: `${this.auth.uid}_${library.slug}_${this.post.id}`,
           userId: this.auth.uid,
           postId: this.post.id,
           slug: library.slug
-        }).data
-        try {
-          await this.$axios.$post(`//localhost:3001/libraries/`, libraryData)
-          this.$store.commit('notification', { message: `Adicionado em ${library.label.toLowerCase()}`, type: 'default' })
-        } catch (error) {
-          this.$store.commit('notification', { message: 'Essa operação não pôde ser concluída', type: 'error' })
-        }
+        })
+        await this.$axios.$post(`//localhost:3001/libraries/`, newLibrary.data)
+        this.post.libraries.push(newLibrary.data)
+        this.$store.commit('notification', { message: `Adicionado em ${library.label.toLowerCase()}`, type: 'default' })
+      } catch (error) {
+        this.$store.commit('notification', { message: 'Essa operação não pôde ser concluída', type: 'error' })
       }
     }
   }
