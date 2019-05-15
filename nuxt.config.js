@@ -33,8 +33,7 @@ module.exports = {
   */
   css: [
     '~/assets/css/tailwind.css',
-    'animate.css/animate.min.css',
-    'vue-plyr/dist/vue-plyr.css'
+    'animate.css/animate.min.css'
   ],
 
   /*
@@ -45,8 +44,7 @@ module.exports = {
     '~/plugins/filters.js',
     '~/plugins/axios.js',
     '~/plugins/fire.js',
-    '~/plugins/analytics.js',
-    '~/plugins/plyr.js'
+    '~/plugins/analytics.js'
   ],
 
   /*
