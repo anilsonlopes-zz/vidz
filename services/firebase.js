@@ -18,4 +18,12 @@ if (firebase.apps.length === 0) {
 firebase.auth().useDeviceLanguage()
 
 export const db = firebase.firestore()
+export const auth = firebase.auth()
+export const parseData = (query) => {
+  const arr = []
+  query.forEach((doc) => {
+    arr.push(doc.data())
+  })
+  return arr
+}
 export default firebase

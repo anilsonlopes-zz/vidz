@@ -38,8 +38,6 @@
 </template>
 
 <script>
-import { parseQuery } from '~/plugins/filters.js'
-
 export default {
   props: {
     title: {
@@ -69,10 +67,7 @@ export default {
   }),
   mounted() {
     if (this.query) {
-      this.$axios.$get(`//localhost:3001/posts/?${parseQuery(this.query)}&_limit=6`).then((items) => {
-        this.list = items
-        this.empty = this.list.length === 0
-      })
+      // code
     }
   }
 }

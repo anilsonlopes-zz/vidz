@@ -1,10 +1,9 @@
-import firebase from '~/services/firebase'
+import { auth, db } from '~/services/firebase'
 
 export default (context) => {
-  context.firebase = firebase
-  context.firebase.auth().onAuthStateChanged((user) => {
+  auth.onAuthStateChanged((user) => {
     if (user) {
-      firebase.firestore().collection('users').doc(user.uid).get().then((doc) => {
+      db.collection('users').doc(user.uid).get().then((doc) => {
         context.store.commit('auth', doc.exists ? doc.data() : null)
       })
     }
