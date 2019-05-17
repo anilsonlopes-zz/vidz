@@ -1,5 +1,6 @@
 <template>
   <div>
+    <span v-if="empty">Nada ainda.</span>
     <div class="mt-4 py-2 px-1">
       <nuxt-link
         v-for="(post, index) in posts"
@@ -44,7 +45,7 @@
 </template>
 
 <script>
-import { parseQuery } from '~/plugins/filters.js'
+import { db, parseData } from '~/services/firebase'
 
 export default {
   transition: 'fadeInBottom',
@@ -54,8 +55,11 @@ export default {
   watchQuery: ['type'],
   layout: 'tube',
   async asyncData({ query, $axios }) {
-    const posts = await $axios.$get(`//localhost:3001/posts/?${parseQuery(query)}`)
-    return { posts }
+    const querySnapshot = await db.collection('posts').where('type', '==', query.type).get()
+    return {
+      posts: parseData(querySnapshot),
+      empty: querySnapshot.empty
+    }
   }
 }
 </script>

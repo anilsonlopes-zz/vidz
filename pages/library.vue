@@ -1,5 +1,6 @@
 <template>
   <div>
+    <span v-if="empty">Nada ainda.</span>
     <div class="mt-4 py-2 px-1">
       <nuxt-link
         v-for="(library, index) in libraries"
@@ -44,7 +45,7 @@
 </template>
 
 <script>
-import { parseQuery } from '~/plugins/filters.js'
+import { db, parseData } from '~/services/firebase'
 
 export default {
   transition: 'fadeInBottom',
@@ -54,8 +55,11 @@ export default {
   watchQuery: ['slug'],
   layout: 'tube',
   async asyncData({ query, $axios }) {
-    const libraries = await $axios.$get(`//localhost:3001/libraries/?${parseQuery(query)}&_expand=post`)
-    return { libraries }
+    const querySnapshot = await db.collection('libraries').where('slug', '==', query.slug).get()
+    return {
+      libraries: parseData(querySnapshot),
+      empty: querySnapshot.empty
+    }
   }
 }
 </script>
