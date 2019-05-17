@@ -89,7 +89,7 @@ export default {
     },
     verify() {
       return new Promise((resolve, reject) => {
-        const ref = db.collection('posts').where('imdb', '==', this.imdbID)
+        const ref = db.collection('posts').where('imdbid', '==', this.imdbID)
         ref.get().then((querySnapshot) => {
           if (querySnapshot.empty) {
             resolve()
