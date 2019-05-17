@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { db } from '~/services/firebase'
+import { db, parseData } from '~/services/firebase'
 
 export default {
   props: {
@@ -52,9 +52,9 @@ export default {
       default: false
     },
     query: {
-      type: Object,
+      type: Array,
       required: false,
-      default: () => ({})
+      default: () => ([])
     }
   },
   data: () => ({
@@ -70,7 +70,12 @@ export default {
   }),
   mounted() {
     if (this.query) {
-      window.console.log(db, this.query)
+      const ref = db.collection('posts').where(...this.query)
+      ref.get().then((querySnapshot) => {
+        window.console.log(querySnapshot)
+        this.empty = querySnapshot.empty
+        this.list = parseData(querySnapshot)
+      })
     }
   }
 }

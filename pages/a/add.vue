@@ -91,7 +91,7 @@ export default {
       return new Promise((resolve, reject) => {
         const ref = db.collection('posts').where('imdb', '==', this.imdbID)
         ref.get().then((querySnapshot) => {
-          if (!querySnapshot.exists) {
+          if (querySnapshot.empty) {
             resolve()
           } else {
             reject(new Error(`duplicated (${querySnapshot.length})`))
