@@ -67,6 +67,14 @@ export const parse = (data) => {
         })
         break
 
+      case 'country':
+        const countryList = data[key].split(',')
+        parsed.search.countries = {}
+        countryList.forEach((country) => {
+          parsed.search.countries[slug(country, { lower: true })] = true
+        })
+        break
+
       case 'metascore':
         parsed.search.metascore = parseInt(data[key])
         break

@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { db } from '~/services/firebase'
+
 export default {
   props: {
     title: {
@@ -61,13 +63,14 @@ export default {
       { id: 1, title: '', poster: '' },
       { id: 2, title: '', poster: '' },
       { id: 3, title: '', poster: '' },
-      { id: 4, title: '', poster: '' }
+      { id: 4, title: '', poster: '' },
+      { id: 5, title: '', poster: '' }
     ],
     classItem: 'md:h-64 h-32 p-3 bg-cover bg-center bg-grey-light shadow'
   }),
   mounted() {
     if (this.query) {
-      // code
+      window.console.log(db, this.query)
     }
   }
 }
