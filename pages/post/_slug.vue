@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import { db, parseData } from '~/services/firebase'
 import Library from '~/models/Library.js'
 import { mapGetters } from 'vuex'
 
@@ -121,8 +122,8 @@ export default {
     ...mapGetters(['auth'])
   },
   async asyncData({ params, $axios }) {
-    const data = await $axios.$get(`//localhost:3001/posts/?slug=${params.slug}&_embed=libraries&_limit=1`)
-    return { post: data[0] }
+    const querySnapshot = await db.collection('posts').where('slug', '==', params.slug).get()
+    return { post: parseData(querySnapshot)[0] }
   },
   methods: {
     handleLibrary(library) {
