@@ -519,6 +519,8 @@ module.exports = {
     '32': '8rem',
     '48': '12rem',
     '64': '16rem',
+    'xs': '20rem',
+    'sm': '30rem',
     'full': '100%',
     'half-screen': '50vh',
     'screen': '100vh'

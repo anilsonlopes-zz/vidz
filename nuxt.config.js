@@ -86,5 +86,9 @@ module.exports = {
   router: {
     base: process.env.DEPLOY_ENV === 'GH_PAGES' ? '/' + pkg.name + '/' : '',
     middleware: ['auth']
+  },
+  server: {
+    host: '0.0.0.0',
+    port: '80'
   }
 }
