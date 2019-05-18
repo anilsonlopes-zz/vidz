@@ -8,7 +8,7 @@
         />
       </div>
       <div class="animated fadeIn fast flex flex-col h-auto md:h-64 pt-4 sm:pl-4">
-        <div v-if="auth" class="flex mb-2">
+        <div v-if="auth" id="libraries" class="flex mb-2">
           <button
             v-for="(library, index) in libraries"
             :key="index"
