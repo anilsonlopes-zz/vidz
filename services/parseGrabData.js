@@ -6,7 +6,13 @@ export const parse = (data) => {
     id: random.uuid(),
     published: new Date().getTime(),
     slug: slug(data.Title, { lower: true }),
-    search: {}
+    search: {},
+    stats: {
+      'watch-later': 0,
+      'watched': 0,
+      'liked': 0,
+      'views': 1
+    }
   }
   Object.keys(data).map((key) => {
     const k = key.toLowerCase()

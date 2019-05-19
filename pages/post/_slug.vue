@@ -1,19 +1,20 @@
 <template>
   <div>
-    <div class="flex flex-col sm:flex-row items-start select-none px-2">
+    <div class="flex flex-col sm:flex-row items-start select-none px-2" :class="{ 'animated fadeIn slow': post.title }">
       <div class="w-full md:max-w-xs">
         <div
-          class="h-32 md:h-sm bg-cover bg-center rounded shadow"
+          class="h-32 md:h-sm bg-blue-lightest bg-cover bg-center rounded"
+          :class="{ 'shadow': post.poster }"
           :style="{ 'background-image': `url(${post.poster})` }"
         />
       </div>
-      <div class="animated fadeIn fast flex flex-col h-auto md:h-64 pt-4 sm:pl-4">
-        <div v-if="auth" id="libraries" class="flex mb-2">
+      <div class="w-full animated fadeIn fast flex flex-col h-auto md:h-64 pt-4 sm:pl-4">
+        <div v-if="auth && post.stats" id="libraries" class="flex mb-2">
           <button
-            v-for="(library, index) in libraries"
+            v-for="(library, index) in librariesPublic"
             :key="index"
-            class="mr-2 flex items-center text-sm py-2 px-3 text-grey-darker border border-grey-lighter hover:bg-grey-lighter transition rounded focus:outline-none focus:shadow-md"
-            :class="{ 'bg-grey-darker text-grey-lighter': index == 2 }"
+            class="mr-2 flex items-center text-sm py-2 px-3 text-grey-darker border border-grey-lighter transition rounded focus:outline-none focus:shadow-md"
+            :class="{ 'bg-grey-darker text-grey-lighter': library.have }"
             :title="library.label"
             type="button"
             @click="toggleLibrary(library)"
@@ -25,7 +26,11 @@
           </button>
         </div>
         <div id="title_plot">
-          <div class="text-grey-darker text-xl pt-2 md:text-3xl" aria-label="Título do post">
+          <div
+            class="text-grey-darker text-xl pt-2 md:text-3xl"
+            :class="{ 'bg-grey-light w-full h-10 animated': !post.title }"
+            aria-label="Título do post"
+          >
             {{ post.title }}
           </div>
           <div id="year_type_seasons" class="flex uppercase font-mono text-xxs text-grey-dark mt-2">
@@ -39,12 +44,16 @@
               {{ post.totalseasons }} temporada{{ post.totalseasons > 1 ? 's' : '' }}
             </div>
           </div>
-          <div class="sm:block max-w-sm text-grey-dark pt-2" aria-label="Descrição do post">
+          <div
+            class="sm:block max-w-sm text-grey-dark pt-2"
+            :class="{ 'bg-grey w-full h-32': !post.plot }"
+            aria-label="Descrição do post"
+          >
             {{ post.plot }}
           </div>
         </div>
-        <div id="actors_genres" class="pt-4 text-xs text-grey">
-          <div>
+        <div id="actors_genres" class="pt-4 text-xs text-grey" :class="{ 'border-t-8 border-white w-full h-10 bg-grey-lighter': !post.actors }">
+          <div v-if="post.actors">
             Estrelando: {{ post.actors }}
           </div>
           <div class="pt-1">
@@ -52,10 +61,16 @@
           </div>
         </div>
         <div id="country_language" class="uppercase pt-3 pb-1 text-grey flex text-xs font-mono">
-          <div class="border border-grey-light rounded py-2 px-2 mr-2">
+          <div
+            class="border border-grey-light rounded py-2 px-2 mr-2"
+            :class="{ 'w-1/3 h-6': !post.country }"
+          >
             {{ post.country }}
           </div>
-          <div class="border border-grey-light rounded py-2 px-2">
+          <div
+            class="border border-grey-light rounded py-2 px-2"
+            :class="{ 'w-1/3 h-6': !post.language }"
+          >
             {{ post.language }}
           </div>
         </div>
@@ -85,46 +100,39 @@ export default {
   },
   data: () => ({
     post: {},
-    stats: {
-      views: {
-        label: 'Visualizações',
-        icon: 'fa-eye',
-        count: '985.7M'
-      }
-    },
-    libraries: [
+    librariesPublic: [
       {
         slug: 'watched',
         label: 'Assistidos',
         icon: 'fa-check',
-        count: '...'
+        count: ''
       },
       {
         slug: 'liked',
         label: 'Favoritos',
         icon: 'fa-heart-o',
-        count: '...'
+        count: ''
       },
       {
         slug: 'watch-later',
         label: 'Quero assistir',
         icon: 'fa-clock-o',
-        count: '...'
+        count: ''
       }
     ]
   }),
   computed: {
     ...mapGetters(['auth'])
   },
-  async asyncData({ params, $axios }) {
-    const querySnapshot = await db.collection('posts').where('slug', '==', params.slug).get()
-    return { post: parseData(querySnapshot)[0] }
+  mounted() {
+    this.fetchPost().then(this.fetchLibraries)
   },
   methods: {
     toggleLibrary(library) {
-      // code
+      // FIXME: Verificar ação (add/remove) da library
+      this.addLibrary(library)
     },
-    async addLibraryFromUser(library) {
+    addLibrary(library) {
       try {
         const newLibrary = new Library({
           id: `${this.auth.uid}_${library.slug}_${this.post.id}`,
@@ -132,12 +140,30 @@ export default {
           postId: this.post.id,
           slug: library.slug
         })
-        await this.$axios.$post(`//localhost:3001/libraries/`, newLibrary.data)
-        this.post.libraries.push(newLibrary.data)
-        this.$store.commit('notification', { message: `Adicionado em ${library.label.toLowerCase()}`, type: 'default' })
+        const ref = db.collection('libraries').doc(newLibrary.data.id)
+        ref.set(newLibrary.data, { merge: true }).then(() => {
+          this.$store.commit('notification', { message: `Adicionei em ${library.label.toLowerCase()} para você`, type: 'default' })
+        })
       } catch (error) {
-        this.$store.commit('notification', { message: 'Essa operação não pôde ser concluída', type: 'error' })
+        this.$store.commit('notification', { message: 'Tente novamente. Se não funcionar, fala com a gente.', type: 'error' })
       }
+    },
+    fetchLibraries() {
+      this.librariesPublic.map((library) => {
+        let ref = db.collection('libraries')
+        ref = ref.where('postId', '==', this.post.id)
+        ref = ref.where('slug', '==', library.slug)
+        ref.onSnapshot((querySnapshot) => {
+          this.librariesPublic.find(l => l.slug === library.slug).count = querySnapshot.size
+        })
+      })
+    },
+    fetchPost() {
+      return db.collection('posts').where('slug', '==', this.$route.params.slug).get().then((posts) => {
+        this.$nextTick(() => {
+          this.post = parseData(posts)[0]
+        })
+      })
     }
   }
 }
