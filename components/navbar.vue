@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     handleSearch() {
-      this.$router.replace({ name: 'posts', query: { title_like: this.search } })
+      this.$router.replace({ name: 'posts-query', params: { query: this.search } })
     }
   }
 }

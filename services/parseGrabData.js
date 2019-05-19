@@ -17,6 +17,15 @@ export const parse = (data) => {
   Object.keys(data).map((key) => {
     const k = key.toLowerCase()
     switch (k) {
+      case 'title':
+        const letterList = data[key].toLowerCase().split('')
+        parsed.title = data[key]
+        parsed.search.title = {}
+        letterList.forEach((letter) => {
+          parsed.search.title[letter] = true
+        })
+        break
+
       case 'awards':
         const awardList = data[key].split(',')
         parsed.awards = data[key]

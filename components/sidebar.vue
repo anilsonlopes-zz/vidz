@@ -68,11 +68,11 @@ export default {
     mediaMenu: [
       {
         name: 'Séries',
-        to: { name: 'posts', query: { type: 'series' } }
+        to: { name: 'filter', query: { type: 'series' } }
       },
       {
         name: 'Filmes',
-        to: { name: 'posts', query: { type: 'movie' } }
+        to: { name: 'filter', query: { type: 'movie' } }
       }
     ],
     libraryMenu: [
