@@ -9,7 +9,7 @@
         />
       </div>
       <div class="w-full animated fadeIn fast flex flex-col h-auto md:h-64 pt-4 sm:pl-4">
-        <div v-if="auth && post.stats" id="libraries" class="flex mb-2">
+        <div v-if="auth" id="libraries" class="flex mb-2">
           <button
             v-for="(library, index) in librariesPublic"
             :key="index"
@@ -105,19 +105,22 @@ export default {
         slug: 'watched',
         label: 'Assistidos',
         icon: 'fa-check',
-        count: ''
+        count: '',
+        have: false
       },
       {
         slug: 'liked',
         label: 'Favoritos',
         icon: 'fa-heart-o',
-        count: ''
+        count: '',
+        have: false
       },
       {
         slug: 'watch-later',
         label: 'Quero assistir',
         icon: 'fa-clock-o',
-        count: ''
+        count: '',
+        have: false
       }
     ]
   }),
@@ -129,8 +132,13 @@ export default {
   },
   methods: {
     toggleLibrary(library) {
-      // FIXME: Verificar ação (add/remove) da library
-      this.addLibrary(library)
+      if (!library.have) {
+        this.addLibrary(library)
+      } else {
+        db.collection('libraries').doc(`${this.auth.uid}_${library.slug}_${this.post.id}`).delete().then(() => {
+          this.$store.commit('notification', { message: `Removi de ${library.label.toLowerCase()} para você`, type: 'default' })
+        })
+      }
     },
     addLibrary(library) {
       try {
@@ -155,6 +163,7 @@ export default {
         ref = ref.where('slug', '==', library.slug)
         ref.onSnapshot((querySnapshot) => {
           this.librariesPublic.find(l => l.slug === library.slug).count = querySnapshot.size
+          this.userHaveThisLibrary(library.slug)
         })
       })
     },
@@ -163,6 +172,12 @@ export default {
         this.$nextTick(() => {
           this.post = parseData(posts)[0]
         })
+      })
+    },
+    userHaveThisLibrary(slug) {
+      const ref = db.collection('libraries').where('slug', '==', slug).where('postId', '==', this.post.id).where('userId', '==', this.auth.uid)
+      ref.get().then((querySnapshot) => {
+        this.librariesPublic.find(l => l.slug === slug).have = !querySnapshot.empty
       })
     }
   }
