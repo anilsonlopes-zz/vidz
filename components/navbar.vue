@@ -60,7 +60,10 @@ export default {
   },
   methods: {
     handleSearch() {
-      this.$router.replace({ name: 'posts-query', params: { query: this.search } })
+      if (!this.search.trim()) {
+        return this.$router.replace({ name: 'index' })
+      }
+      this.$router.replace({ name: 'posts-query', params: { query: this.search.toLowerCase() } })
     }
   }
 }
