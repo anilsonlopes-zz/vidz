@@ -1,6 +1,16 @@
 <template>
   <div>
-    <span v-if="empty">Nada ainda.</span>
+    <div v-if="empty" class="text-center">
+      <div class="text-2xl my-10 text-grey-light uppercase">
+        ...
+      </div>
+      <div class="text-5xl">
+        👽
+      </div>
+      <div class="font-mono text-grey text-sm mt-10 max-w-sm mx-auto">
+        Se você acredita que algo está errado, faça contato. Adoramos isso.
+      </div>
+    </div>
     <div class="mt-4 py-2 px-1">
       <nuxt-link
         v-for="(post, index) in posts"
