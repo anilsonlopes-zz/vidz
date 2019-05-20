@@ -1,6 +1,5 @@
 <template>
   <div>
-    <span v-if="empty">Nada ainda.</span>
     <div class="mt-4 py-2 px-1">
       <nuxt-link
         v-for="(post, index) in posts"
@@ -55,11 +54,9 @@ export default {
   watchQuery: ['type'],
   layout: 'tube',
   async asyncData({ query, $axios }) {
-    const querySnapshot = await db.collection('posts').where('type', '==', query.type).get()
-    return {
-      posts: parseData(querySnapshot),
-      empty: querySnapshot.empty
-    }
+    const ref = db.collection('posts').where('type', '==', query.type)
+    const querySnapshot = await ref.get()
+    return { posts: parseData(querySnapshot) }
   }
 }
 </script>
