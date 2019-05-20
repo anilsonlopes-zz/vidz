@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { db, parseData } from '~/services/firebase'
 import parseGrabData from '~/services/parseGrabData.js'
 
 export default {
@@ -57,9 +58,14 @@ export default {
         .then(() => {
           this.fetchStatus = '++fetching'
           this.$axios.$get(`//www.omdbapi.com/?i=${this.imdbID}`).then((data) => {
+            if (data.Response === 'False') {
+              this.fetchStatus = '++imdb fail'
+              this.timeoutChangeProperty('fetchStatus', 'fetch', 3000)
+              return false
+            }
+            this.fetchStatus = '++fetched'
             this.data = parseGrabData(data)
             this.properties = Object.keys(this.data).map(key => key)
-            this.fetchStatus = '++fetched'
             this.timeoutChangeProperty('fetchStatus', 'fetch')
           })
         })
@@ -71,7 +77,8 @@ export default {
     save() {
       if (!this.data) return !1
       this.saveStatus = '++saving'
-      this.$axios.$post(`//localhost:3001/posts/`, this.data).then((response) => {
+      const ref = db.collection('posts').add(this.data)
+      ref.then((response) => {
         this.saveStatus = '++saved'
         this.timeoutChangeProperty('saveStatus', 'save', 2000, () => {
           this.data = null
@@ -82,11 +89,12 @@ export default {
     },
     verify() {
       return new Promise((resolve, reject) => {
-        this.$axios.$get(`//localhost:3001/posts/?imdbid=${this.imdbID}`).then((records) => {
-          if (!records.length) {
+        const ref = db.collection('posts').where('imdbid', '==', this.imdbID)
+        ref.get().then((querySnapshot) => {
+          if (querySnapshot.empty) {
             resolve()
           } else {
-            reject(new Error(`duplicated (${records.length})`))
+            reject(new Error(`duplicated (${querySnapshot.length})`))
           }
         })
       })
@@ -98,8 +106,9 @@ export default {
       }, timeout || 2000)
     },
     fetchPosts() {
-      this.$axios.$get('//localhost:3001/posts/?_sort=published&_order=desc').then((posts) => {
-        this.posts = posts
+      const ref = db.collection('posts').orderBy('published', 'desc')
+      ref.get().then((querySnapshot) => {
+        this.posts = parseData(querySnapshot)
       })
     }
   }

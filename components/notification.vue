@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded py-2 px-4 mb-4 animated bounceInUp faster shadow" :class="className">
+  <div ref="notification" class="rounded py-2 px-4 mb-4 animated fadeInUp faster shadow" :class="className">
     <span class="select-none text-sm">
       {{ notification.message }}
     </span>
@@ -34,7 +34,11 @@ export default {
   mounted() {
     const duration = this.notification.duration || 5
     window.setTimeout(() => {
-      this.$store.commit('removeNotification', this.notification.id)
+      this.$refs.notification.classList.add('fadeOutDown')
+      // FIXME: Remove notification after 'transitionend'
+      window.setTimeout(() => {
+        this.$store.commit('removeNotification', this.notification.id)
+      }, 500)
     }, duration * 1000)
   }
 }

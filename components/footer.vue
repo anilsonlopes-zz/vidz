@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-grey-lightest shadow flex justify-between items-center px-5 lg:px-10 py-4 mt-10">
+  <div class="bg-grey-lightest rounded-full flex justify-between items-center px-5 lg:px-10 py-4 mt-10">
     <div class="flex items-center">
       <nuxt-link :to="{ name: 'index' }" class="text-grey-dark no-underline hover:text-grey-darker mr-8">
         {{ pkg.name }}

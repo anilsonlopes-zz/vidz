@@ -33,8 +33,7 @@ module.exports = {
   */
   css: [
     '~/assets/css/tailwind.css',
-    'animate.css/animate.min.css',
-    'vue-plyr/dist/vue-plyr.css'
+    'animate.css/animate.min.css'
   ],
 
   /*
@@ -45,8 +44,7 @@ module.exports = {
     '~/plugins/filters.js',
     '~/plugins/axios.js',
     '~/plugins/fire.js',
-    '~/plugins/analytics.js',
-    '~/plugins/plyr.js'
+    '~/plugins/analytics.js'
   ],
 
   /*
@@ -88,5 +86,9 @@ module.exports = {
   router: {
     base: process.env.DEPLOY_ENV === 'GH_PAGES' ? '/' + pkg.name + '/' : '',
     middleware: ['auth']
+  },
+  server: {
+    host: '0.0.0.0',
+    port: '80'
   }
 }

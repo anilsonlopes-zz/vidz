@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { parseQuery } from '~/plugins/filters.js'
+import { db, parseData } from '~/services/firebase'
 
 export default {
   transition: 'fadeInBottom',
@@ -54,8 +54,9 @@ export default {
   watchQuery: ['type'],
   layout: 'tube',
   async asyncData({ query, $axios }) {
-    const posts = await $axios.$get(`//localhost:3001/posts/?${parseQuery(query)}`)
-    return { posts }
+    const ref = db.collection('posts').where('type', '==', query.type)
+    const querySnapshot = await ref.get()
+    return { posts: parseData(querySnapshot) }
   }
 }
 </script>

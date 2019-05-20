@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { parseQuery } from '~/plugins/filters.js'
+import { db, parseData } from '~/services/firebase'
 
 export default {
   props: {
@@ -52,9 +52,9 @@ export default {
       default: false
     },
     query: {
-      type: Object,
+      type: Array,
       required: false,
-      default: () => ({})
+      default: () => ([])
     }
   },
   data: () => ({
@@ -63,15 +63,17 @@ export default {
       { id: 1, title: '', poster: '' },
       { id: 2, title: '', poster: '' },
       { id: 3, title: '', poster: '' },
-      { id: 4, title: '', poster: '' }
+      { id: 4, title: '', poster: '' },
+      { id: 5, title: '', poster: '' }
     ],
     classItem: 'md:h-64 h-32 p-3 bg-cover bg-center bg-grey-light shadow'
   }),
   mounted() {
     if (this.query) {
-      this.$axios.$get(`//localhost:3001/posts/?${parseQuery(this.query)}&_limit=6`).then((items) => {
-        this.list = items
-        this.empty = this.list.length === 0
+      const ref = db.collection('posts').where(...this.query)
+      ref.onSnapshot((querySnapshot) => {
+        this.empty = querySnapshot.empty
+        this.list = parseData(querySnapshot)
       })
     }
   }

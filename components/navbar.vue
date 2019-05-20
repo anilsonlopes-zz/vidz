@@ -1,5 +1,12 @@
 <template>
   <div class="z-50 flex justify-between items-center py-2">
+    <nuxt-link
+      v-if="$route.name != 'index'"
+      :to="{ name: 'index' }"
+      class="p-4 text-grey-darker focus:text-blue focus:outline-none transition"
+    >
+      <i class="fa fa-undo" />
+    </nuxt-link>
     <div class="w-full relative">
       <button type="button" class="absolute pin-t pin-l ml-4 mt-2 text-grey bg-transparent border-none">
         <i class="fa fa-search" />
@@ -53,7 +60,10 @@ export default {
   },
   methods: {
     handleSearch() {
-      this.$router.replace({ name: 'posts', query: { title_like: this.search } })
+      if (!this.search.trim()) {
+        return this.$router.replace({ name: 'index' })
+      }
+      this.$router.replace({ name: 'posts-query', params: { query: this.search.toLowerCase() } })
     }
   }
 }
