@@ -6,7 +6,7 @@
         :key="library.postId"
         class="overflow-hidden flex flex-col sm:flex-row w-full md:mb-8 no-underline hover:bg-grey-lighter p-2 transition"
         :class="{ 'pt-8 sm:pt-2 border-t sm:border-0': index > 0 }"
-        :to="{ name: 'post-slug', params: { slug: 'library.post.slug' } }"
+        :to="{ name: 'post-slug', params: { slug: posts[library.postId].slug } }"
       >
         <div>
           <div
@@ -67,13 +67,16 @@ export default {
       this.fetchLibraries()
     }
   },
+  mounted() {
+    this.fetchLibraries()
+  },
   methods: {
     fetchLibraries() {
       if (this.auth) {
         let librariesRef = db.collection('libraries')
         librariesRef = librariesRef.where('userId', '==', this.auth.uid)
         librariesRef = librariesRef.where('slug', '==', this.$route.query.slug)
-        librariesRef.onSnapshot((querySnapshot) => {
+        librariesRef.get().then((querySnapshot) => {
           this.count = querySnapshot.size
           this.libraries = parseData(querySnapshot)
           this.fetchPosts()
@@ -83,7 +86,7 @@ export default {
     fetchPosts() {
       this.libraries.map((library, i) => {
         const ref = db.collection('posts').where('id', '==', library.postId)
-        ref.onSnapshot((querySnapshot) => {
+        ref.get().then((querySnapshot) => {
           this.loaded = i < this.libraries.length - 1
           this.posts[library.postId] = parseData(querySnapshot)[0]
         })
