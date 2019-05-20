@@ -52,6 +52,7 @@ export default {
   head: {
     title: 'Biblioteca'
   },
+  watchQuery: ['slug'],
   layout: 'tube',
   data: () => ({
     libraries: [],
@@ -64,10 +65,6 @@ export default {
   watch: {
     auth() {
       this.fetchLibraries()
-    },
-    '$route'() {
-      window.console.log('changed')
-      this.fetchLibraries()
     }
   },
   methods: {
@@ -75,7 +72,7 @@ export default {
       if (this.auth) {
         let librariesRef = db.collection('libraries')
         librariesRef = librariesRef.where('userId', '==', this.auth.uid)
-        librariesRef = librariesRef.where('slug', '==', this.$route.params.slug)
+        librariesRef = librariesRef.where('slug', '==', this.$route.query.slug)
         librariesRef.onSnapshot((querySnapshot) => {
           this.count = querySnapshot.size
           this.libraries = parseData(querySnapshot)

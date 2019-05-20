@@ -24,7 +24,7 @@
         v-for="(item, index) in libraryMenu"
         :key="index"
         class="flex items-center no-underline py-3 pl-8 pr-4 hover:bg-white"
-        :class="$route.name == item.to.name && $route.params.slug == item.to.params.slug ? 'bg-grey-lightest text-grey-darker' : 'text-grey-dark'"
+        :class="$route.name == item.to.name && $route.query.slug == item.to.query.slug ? 'bg-grey-lightest text-grey-darker' : 'text-grey-dark'"
         :to="item.to"
       >
         <i class="fa" :class="item.icon" />
@@ -78,17 +78,17 @@ export default {
     libraryMenu: [
       {
         name: 'Assistidos',
-        to: { name: 'library-slug', params: { slug: 'watched' } },
+        to: { name: 'library', query: { slug: 'watched' } },
         icon: 'fa-check'
       },
       {
         name: 'Favoritos',
-        to: { name: 'library-slug', params: { slug: 'liked' } },
+        to: { name: 'library', query: { slug: 'liked' } },
         icon: 'fa-heart-o'
       },
       {
         name: 'Quero assistir',
-        to: { name: 'library-slug', params: { slug: 'watch-later' } },
+        to: { name: 'library', query: { slug: 'watch-later' } },
         icon: 'fa-clock-o'
       }
     ],
