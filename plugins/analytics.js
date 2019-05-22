@@ -10,9 +10,9 @@ export default ({ app }) => {
     m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
   })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-  ga('create', 'UA-118290517-3', 'auto')
+  ga('create', 'UA-118290517-5', 'auto')
 
-  app.router.afterEach((to, from) => {
+  app.router.afterEach((to) => {
     ga('set', 'page', to.fullPath)
     ga('send', 'pageview')
   })
