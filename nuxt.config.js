@@ -92,6 +92,6 @@ module.exports = {
     port: '80'
   },
   generate: {
-    fallback: '404.html'
+    fallback: '/404.html'
   }
 }

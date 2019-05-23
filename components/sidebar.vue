@@ -5,12 +5,15 @@
         {{ pkg.name }} <sub class="text-grey-dark text-sm font-thin"><small>{{ pkg.version }}</small></sub>
       </nuxt-link>
     </div>
-    <div id="mediaMenu" class="pt-4 pb-8 my-4 border-b">
+    <div id="mediaMenu" class="py-4 my-4">
+      <div class="mb-2 uppercase pl-8 text-xs text-grey-darker font-medium">
+        Categorias
+      </div>
       <nuxt-link
         v-for="(item, index) in mediaMenu"
         :key="index"
-        class="flex items-center no-underline py-3 pl-8 pr-4 hover:bg-white"
-        :class="$route.name == item.to.name && $route.query.type == item.to.query.type ? 'bg-grey-lightest text-grey-darker' : 'text-grey-dark'"
+        class="flex items-center no-underline py-3 pl-8 pr-4 text-grey-dark hover:text-grey-darkest"
+        :class="$route.name == item.to.name && $route.query.type == item.to.query.type ? 'bg-blue-lightest text-grey-darker' : 'text-grey-dark'"
         :to="item.to"
       >
         <i class="fa fa-angle-right" />
@@ -19,12 +22,15 @@
         </span>
       </nuxt-link>
     </div>
-    <div id="libraryMenu" class="pt-4 pb-8 my-4 border-b">
+    <div id="libraryMenu" class="py-4 my-4 border-b">
+      <div class="mb-2 uppercase pl-8 text-xs text-grey-darker font-medium">
+        Playlists
+      </div>
       <nuxt-link
         v-for="(item, index) in libraryMenu"
         :key="index"
-        class="flex items-center no-underline py-3 pl-8 pr-4 hover:bg-white"
-        :class="$route.name == item.to.name && $route.query.slug == item.to.query.slug ? 'bg-grey-lightest text-grey-darker' : 'text-grey-dark'"
+        class="flex items-center no-underline py-3 pl-8 pr-4 text-grey-dark hover:text-grey-darkest"
+        :class="$route.name == item.to.name && $route.query.slug == item.to.query.slug ? 'bg-blue-lightest text-grey-darker' : 'text-grey-dark'"
         :to="item.to"
       >
         <i class="fa" :class="item.icon" />
@@ -33,11 +39,11 @@
         </span>
       </nuxt-link>
     </div>
-    <div id="accountMenu" class="pt-4 pr-4 pb-8 pl-4 m-4">
+    <div id="accountMenu">
       <nuxt-link
         v-for="(item, index) in accountMenu"
         :key="index"
-        class="flex items-center text-sm no-underline py-2 text-grey-dark hover:text-grey-darkest"
+        class="flex items-center text-xs no-underline py-3 pl-8 pr-4 text-grey-dark hover:text-grey-darkest"
         :to="item.to"
       >
         <i class="fa" :class="item.class" />
@@ -47,7 +53,7 @@
       </nuxt-link>
       <button
         type="button"
-        class="flex items-center text-sm no-underline py-2 text-grey-dark hover:text-grey-darkest"
+        class="flex items-center text-xs no-underline py-3 pl-8 pr-4 text-grey-dark hover:text-grey-darkest"
         @click="logout"
       >
         <i class="fa fa-sign-out" />

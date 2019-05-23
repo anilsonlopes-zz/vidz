@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden min-h-screen font-sans bg-white">
+  <div class="overflow-hidden min-h-screen font-sans">
     <div class="flex">
       <nf-sidebar />
       <div id="content" class="w-full px-2 content">
