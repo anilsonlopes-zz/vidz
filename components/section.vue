@@ -71,7 +71,7 @@ export default {
   mounted() {
     if (this.query) {
       const ref = db.collection('posts').where(...this.query)
-      ref.onSnapshot((querySnapshot) => {
+      ref.get().then((querySnapshot) => {
         this.empty = querySnapshot.empty
         this.list = parseData(querySnapshot)
       })
