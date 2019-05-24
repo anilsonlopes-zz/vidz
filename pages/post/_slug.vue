@@ -77,13 +77,19 @@
       </div>
     </div>
     <div class="pt-5 mt-5 border-t-2 border-grey-lighter">
-      <nf-section title="Do mesmo ano" :query="['search.year', '==', 2011]" :transition="true" />
-      <nf-section title="Sci-fi" :query="['search.genres.sci-fi', '==', true]" :transition="true" class="mt-4" />
+      <nf-section
+        v-for="(section, index) in sections"
+        :key="index"
+        :title="section.title"
+        :query="section.query"
+        :transition="true"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import slug from 'slug'
 import { db, parseData } from '~/services/firebase'
 import Library from '~/models/Library.js'
 import { mapGetters } from 'vuex'
@@ -122,7 +128,8 @@ export default {
         count: '',
         have: false
       }
-    ]
+    ],
+    sections: []
   }),
   computed: {
     ...mapGetters(['auth'])
@@ -169,9 +176,13 @@ export default {
     },
     fetchPost() {
       return db.collection('posts').where('slug', '==', this.$route.params.slug).get().then((posts) => {
-        this.$nextTick(() => {
-          this.post = parseData(posts)[0]
-        })
+        const post = parseData(posts)[0]
+        const sections = post.genres.split(',').map(genre => ({
+          title: genre.trim(),
+          query: [`search.genres.${slug(genre, { lower: true })}`, '==', true]
+        }))
+        this.post = post
+        this.sections = sections
       })
     },
     userHaveThisLibrary(slug) {
