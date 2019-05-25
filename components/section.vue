@@ -19,18 +19,8 @@
           :class="classItem"
           :style="{ 'background-image': `url(${item.poster})` }"
         />
-        <div>
-          <h5 class="truncate text-black my-2">
-            {{ item.title }}
-          </h5>
-          <div class="text-xxs text-grey-dark font-medium uppercase flex items-center">
-            <span class="mr-4">
-              Views 28.1K
-            </span>
-            <span>
-              1h atrás
-            </span>
-          </div>
+        <div class="text-grey-dark truncate pt-2">
+          {{ item.title }}
         </div>
       </nuxt-link>
     </div>
@@ -66,7 +56,7 @@ export default {
       { id: 4, title: '', poster: '' },
       { id: 5, title: '', poster: '' }
     ],
-    classItem: 'md:h-64 h-32 p-3 bg-cover bg-center bg-grey-light shadow'
+    classItem: 'md:h-64 h-32 p-3 bg-cover bg-center bg-grey-darker'
   }),
   mounted() {
     if (this.query) {

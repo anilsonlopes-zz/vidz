@@ -1,56 +1,27 @@
 <template>
-  <div class="hidden fixed animated fadeIn slow pin-t pin-l pin-b md:block max-w-xs w-64 bg-grey-lighter text-grey-lighter h-screen overflow-y-auto scroll-custom">
+  <div class="hidden fixed animated fadeIn slow pin-t pin-l pin-b md:block max-w-xs w-64 bg-grey-darker text-grey-lighter h-screen overflow-y-auto scroll-custom">
     <div id="brand" class="p-4 text-center">
       <nuxt-link :to="{ name: 'index' }" tag="h2" class="cursor-pointer text-black">
         {{ pkg.name }} <sub class="text-grey-dark text-sm font-thin"><small>{{ pkg.version }}</small></sub>
       </nuxt-link>
     </div>
-    <div id="mediaMenu" class="py-4 my-4">
-      <div class="mb-2 uppercase pl-8 text-xs text-grey-darker font-medium">
-        Categorias
-      </div>
-      <nuxt-link
-        v-for="(item, index) in mediaMenu"
-        :key="index"
-        class="flex items-center no-underline py-3 pl-8 pr-4 text-grey-dark hover:text-grey-darkest"
-        :class="$route.name == item.to.name && $route.query.type == item.to.query.type ? 'bg-blue-lightest text-grey-darker' : 'text-grey-dark'"
-        :to="item.to"
-      >
-        <i class="fa fa-angle-right" />
-        <span class="ml-2 font-medium">
-          {{ item.name }}
-        </span>
-      </nuxt-link>
-    </div>
-    <div id="libraryMenu" class="py-4 my-4 border-b">
-      <div class="mb-2 uppercase pl-8 text-xs text-grey-darker font-medium">
-        Playlists
+    <div id="libraryMenu" class="py-4 my-4 px-4 border-b">
+      <div class="mb-2 uppercase text-xl pl-4 text-grey-darkest font-medium font-serif">
+        Library
       </div>
       <nuxt-link
         v-for="(item, index) in libraryMenu"
         :key="index"
-        class="flex items-center no-underline py-3 pl-8 pr-4 text-grey-dark hover:text-grey-darkest"
-        :class="$route.name == item.to.name && $route.query.slug == item.to.query.slug ? 'bg-blue-lightest text-grey-darker' : 'text-grey-dark'"
+        class="sidebar-item flex items-center no-underline py-3 px-4 mb-2 text-grey rounded-lg"
         :to="item.to"
       >
-        <i class="fa" :class="item.icon" />
+        <i class="fa text-grey-light text-xl" :class="item.icon" />
         <span class="ml-2 font-medium">
           {{ item.name }}
         </span>
       </nuxt-link>
     </div>
     <div id="accountMenu">
-      <nuxt-link
-        v-for="(item, index) in accountMenu"
-        :key="index"
-        class="flex items-center text-xs no-underline py-3 pl-8 pr-4 text-grey-dark hover:text-grey-darkest"
-        :to="item.to"
-      >
-        <i class="fa" :class="item.class" />
-        <span class="ml-2 font-medium">
-          {{ item.name }}
-        </span>
-      </nuxt-link>
       <button
         type="button"
         class="flex items-center text-xs no-underline py-3 pl-8 pr-4 text-grey-dark hover:text-grey-darkest"
@@ -65,23 +36,33 @@
   </div>
 </template>
 
+<style scoped>
+.sidebar-item {
+  border: 1px solid transparent;
+  transition: 300ms all;
+}
+.sidebar-item.nuxt-link-exact-active,
+.sidebar-item:hover {
+  color: rgb(220, 220, 220);
+  border-color: rgb(68, 80, 90);
+}
+.sidebar-item.nuxt-link-exact-active > .fa {
+  color: rgb(10, 10, 10);
+}
+</style>
+
 <script>
 import pkg from '~/package.json'
 
 export default {
   data: () => ({
     pkg,
-    mediaMenu: [
-      {
-        name: 'Séries',
-        to: { name: 'filter', query: { type: 'series' } }
-      },
-      {
-        name: 'Filmes',
-        to: { name: 'filter', query: { type: 'movie' } }
-      }
-    ],
     libraryMenu: [
+      {
+        name: 'Explore',
+        to: { name: 'filter' },
+        icon: 'fa-wpexplorer'
+      },
       {
         name: 'Assistidos',
         to: { name: 'library', query: { slug: 'watched' } },
@@ -93,7 +74,7 @@ export default {
         icon: 'fa-heart-o'
       },
       {
-        name: 'Quero assistir',
+        name: 'Assistir depois',
         to: { name: 'library', query: { slug: 'watch-later' } },
         icon: 'fa-clock-o'
       }

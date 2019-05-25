@@ -54,7 +54,10 @@ export default {
   watchQuery: ['type'],
   layout: 'tube',
   async asyncData({ query, $axios }) {
-    const ref = db.collection('posts').where('type', '==', query.type)
+    let ref = db.collection('posts')
+    if (query.type) {
+      ref = ref.where('type', '==', query.type)
+    }
     const querySnapshot = await ref.get()
     return { posts: parseData(querySnapshot) }
   }
