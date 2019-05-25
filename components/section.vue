@@ -1,7 +1,7 @@
 <template>
   <div v-if="!empty">
     <div class="px-2">
-      <h3 v-if="title" class="text-grey-dark font-thin">
+      <h3 v-if="title" class="text-grey font-thin font-serif text-xl uppercase">
         {{ title }}
       </h3>
     </div>

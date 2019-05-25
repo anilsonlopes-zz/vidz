@@ -80,7 +80,7 @@
       <nf-section
         v-for="(section, index) in sections"
         :key="index"
-        :title="section.title"
+        :title="section.title | capitalize"
         :query="section.query"
         :transition="true"
       />
@@ -89,7 +89,6 @@
 </template>
 
 <script>
-import slug from 'slug'
 import { db, parseData } from '~/services/firebase'
 import Library from '~/models/Library.js'
 import { mapGetters } from 'vuex'
@@ -176,9 +175,9 @@ export default {
     fetchPost() {
       return db.collection('posts').where('slug', '==', this.$route.params.slug).get().then((posts) => {
         const post = parseData(posts)[0]
-        const sections = post.genres.split(',').map(genre => ({
+        const sections = Object.keys(post.search.genres).map(genre => ({
           title: genre.trim(),
-          query: [`search.genres.${slug(genre, { lower: true })}`, '==', true]
+          query: [`search.genres.${genre}`, '==', true]
         }))
         window.setTimeout(() => {
           this.post = post
