@@ -1,38 +1,50 @@
 <template>
   <div>
-    <div class="flex flex-col sm:flex-row items-start select-none px-2" :class="{ 'animated fadeIn slow': post.title }">
-      <div class="w-full md:max-w-xs">
-        <div
-          class="h-32 md:h-sm bg-blue-lightest bg-cover bg-center rounded"
-          :class="{ 'shadow': post.poster }"
-          :style="{ 'background-image': `url(${post.poster})` }"
-        />
-      </div>
-      <div class="w-full animated fadeIn fast flex flex-col h-auto md:h-64 pt-4 sm:pl-4">
-        <div v-if="auth" id="libraries" class="flex mb-2">
+    <div
+      aria-label="Informações do post"
+      class="select-none py-4 px-2"
+      :class="{ 'animated fadeIn faster': post.title }"
+    >
+      <div id="poster_libraries" class="w-full flex">
+        <div>
+          <div
+            class="h-64 w-full bg-grey-darkest bg-cover bg-center rounded-lg"
+            :class="{ 'shadow': post.poster }"
+            :style="{ 'background-image': `url(${post.poster})`, 'width': '13rem' }"
+          />
+        </div>
+        <div v-if="auth" id="libraries" class="w-full h-64 flex flex-col justify-between ml-4">
           <button
             v-for="(library, index) in librariesPublic"
             :key="index"
-            class="mr-2 flex items-center text-sm py-2 px-3 text-grey-darker border border-grey-lighter transition rounded focus:outline-none focus:shadow-md"
-            :class="{ 'bg-grey-darker text-grey-lighter': library.have }"
+            class="py-5 w-full mb-2 flex items-center justify-center text-sm animated bounceInRight fast transition rounded-lg focus:outline-none"
+            :class="library.have ? 'bg-grey-darker text-black' : 'bg-grey-darkest text-grey-dark'"
             :title="library.label"
+            :style="{ 'animation-delay': `${index}00ms` }"
             type="button"
             @click="toggleLibrary(library)"
           >
-            <span class="inline-block pr-1 font-medium font-mono text-xs">
+            <i class="fa" :class="`${library.icon}`" />
+            <span class="font-mono ml-2">
               {{ library.count }}
             </span>
-            <i class="fa" :class="`${library.icon}`" />
+          </button>
+          <button
+            class="animated fadeIn py-5 w-full flex items-center justify-center text-sm bg-grey text-black transition rounded-lg focus:outline-none"
+          >
+            <i class="fa fa-play" />
           </button>
         </div>
+      </div>
+      <div class="w-full animated fadeIn fast">
         <div id="title_plot">
-          <div
-            class="text-grey-darker text-xl pt-2 md:text-3xl"
+          <h1
+            class="pb-2 text-grey-light font-serif"
             :class="{ 'bg-grey-light w-full h-10 animated': !post.title }"
             aria-label="Título do post"
           >
             {{ post.title }}
-          </div>
+          </h1>
           <div id="year_type_seasons" class="flex uppercase font-mono text-xxs text-grey-dark mt-2">
             <div class="rounded px-4 py-1 mb-2 mr-3 bg-grey-lightest" aria-label="Ano de lançamento">
               {{ post.year }}
@@ -97,7 +109,6 @@ import { mapGetters } from 'vuex'
 export default {
   transition: 'fadeInBottom',
   layout: 'tube',
-  queryQuery: ['nameResult'],
   head() {
     return {
       title: this.post.title,
@@ -110,7 +121,7 @@ export default {
       {
         slug: 'watched',
         label: 'Assistidos',
-        icon: 'fa-check',
+        icon: 'fa-eye',
         count: '',
         have: false
       },
@@ -123,7 +134,7 @@ export default {
       },
       {
         slug: 'watch-later',
-        label: 'Quero assistir',
+        label: 'Assistir depois',
         icon: 'fa-clock-o',
         count: '',
         have: false

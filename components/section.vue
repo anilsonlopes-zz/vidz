@@ -55,6 +55,11 @@ export default {
       type: Array,
       required: false,
       default: () => ([])
+    },
+    limit: {
+      type: Int8Array,
+      required: false,
+      default: 6
     }
   },
   data: () => ({
@@ -70,7 +75,7 @@ export default {
   }),
   mounted() {
     if (this.query) {
-      const ref = db.collection('posts').where(...this.query)
+      const ref = db.collection('posts').where(...this.query).limit(6)
       ref.get().then((querySnapshot) => {
         this.empty = querySnapshot.empty
         this.list = parseData(querySnapshot)

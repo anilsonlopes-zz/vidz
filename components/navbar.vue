@@ -11,7 +11,7 @@
       <button type="button" class="absolute pin-t pin-l ml-4 mt-2 text-grey bg-transparent border-none">
         <i class="fa fa-search" />
       </button>
-      <input v-model="search" type="text" class="w-full rounded focus:outline-none focus:border-grey-lighter leading-loose transition border border-white bg-transparent pl-10 pl-4 text-grey-darker" placeholder="Buscar..." @keyup.enter="handleSearch">
+      <input v-model="search" type="text" class="w-full rounded focus:outline-none focus:border-grey leading-loose transition border border-white bg-transparent pl-10 pl-4 text-grey-darker" placeholder="Buscar..." @keyup.enter="handleSearch">
     </div>
     <transition enter-active-class="animated fadeInRight fast" leave-active-class="animated fadeOut">
       <div v-if="auth" class="flex items-center pr-4">

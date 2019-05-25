@@ -35,10 +35,6 @@ export default {
     const duration = this.notification.duration || 5
     window.setTimeout(() => {
       this.$refs.notification.classList.add('fadeOutDown')
-      // FIXME: Remove notification after 'transitionend'
-      window.setTimeout(() => {
-        this.$store.commit('removeNotification', this.notification.id)
-      }, 500)
     }, duration * 1000)
   }
 }

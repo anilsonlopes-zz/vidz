@@ -1,10 +1,10 @@
 <template>
-  <div class="overflow-hidden min-h-screen font-sans">
+  <div class="overflow-hidden min-h-screen font-sans bg-black">
     <div class="flex">
       <nf-sidebar />
-      <div id="content" class="w-full px-2 content">
-        <nf-navbar />
+      <div class="w-full px-2 wrapper_right">
         <nuxt />
+        <nf-navbar />
       </div>
     </div>
     <nf-notifications />
@@ -13,7 +13,7 @@
 
 <style scoped>
 @media (min-width: 768px) {
-  .content {
+  .wrapper_right {
     padding-left: 17rem;
   }
 }
