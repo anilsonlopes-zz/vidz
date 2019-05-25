@@ -13,6 +13,7 @@
 <script>
 export default {
   components: {
+    'nf-navbar': () => import('~/components/navbar.vue'),
     'nf-notifications': () => import('~/components/notifications.vue')
   }
 }

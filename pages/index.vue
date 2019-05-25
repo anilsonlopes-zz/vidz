@@ -13,7 +13,6 @@
     <nf-section title="Only from Warner" :query="[ 'production', '==', 'Warner Bros. Pictures']" class="mt-4" />
     <nf-section title="Not recommended for children under 7 years" :query="['rated', '==', 'TV-Y7']" :transition="true" class="mt-4" />
     <nf-section title="Recommended for all audiences" :query="['rated', '==', 'TV-G']" :transition="true" class="mt-4" />
-    <nf-footer />
   </section>
 </template>
 
