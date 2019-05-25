@@ -55,11 +55,6 @@ export default {
       type: Array,
       required: false,
       default: () => ([])
-    },
-    limit: {
-      type: Int8Array,
-      required: false,
-      default: 6
     }
   },
   data: () => ({
