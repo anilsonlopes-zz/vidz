@@ -8,8 +8,8 @@
       <div id="poster_libraries" class="w-full flex">
         <div>
           <div
-            class="h-64 w-full bg-grey-darkest bg-cover bg-center rounded-lg"
-            :class="{ 'shadow': post.poster }"
+            class="h-64 w-full bg-grey-darkest bg-cover  bg-center rounded-lg"
+            :class="{ 'state-loading': !post.poster }"
             :style="{ 'background-image': `url(${post.poster})`, 'width': '13rem' }"
           />
         </div>
@@ -36,30 +36,30 @@
           </button>
         </div>
       </div>
-      <div class="w-full animated fadeIn fast">
+      <div class="w-full fadeIn fast">
         <div id="title_year_type_seasons_plot">
           <h1
-            class="pb-2 text-grey-light font-thin font-serif md:pt-4"
-            :class="{ 'bg-grey-light w-full h-10 animated': !post.title }"
+            class="pb-2 text-grey-light font-thin font-serif md:mt-4"
+            :class="{ 'state-loading rounded-lg mt-4 w-full h-10': !post.title }"
             aria-label="Título do post"
           >
             {{ post.title }}
           </h1>
-          <div id="year_type_seasons" class="flex uppercase font-mono text-xxs text-grey-dark mt-2">
+          <div id="year_type_seasons" class="flex uppercase font-mono text-xxs text-grey mt-2">
             <div class="rounded px-4 py-1 mb-2 mr-3 bg-grey-darker" aria-label="Ano de lançamento">
               {{ post.year }}
             </div>
             <div class="rounded px-4 py-1 mb-2 mr-3 bg-grey-darker" aria-label="Tipo do post">
               {{ post.type }}
             </div>
-            <div v-if="post.type == 'series'" class="rounded px-4 py-1 mb-2 bg-grey-lightest" aria-label="Número de temporadas">
+            <div v-if="post.type == 'series'" class="rounded px-4 py-1 mb-2 mr-3 bg-grey-darker" aria-label="Número de temporadas">
               {{ post.totalseasons }} temporada{{ post.totalseasons > 1 ? 's' : '' }}
             </div>
           </div>
           <div
             id="plot"
             class="sm:block max-w-sm text-grey pt-2"
-            :class="{ 'bg-grey w-full h-32': !post.plot }"
+            :class="{ 'state-loading bg-grey-dark w-full h-32': !post.plot }"
             aria-label="Descrição do post"
           >
             {{ post.plot }}
@@ -180,8 +180,10 @@ export default {
           title: genre.trim(),
           query: [`search.genres.${slug(genre, { lower: true })}`, '==', true]
         }))
-        this.post = post
-        this.sections = sections
+        window.setTimeout(() => {
+          this.post = post
+          this.sections = sections
+        }, 2000)
       })
     },
     userHaveThisLibrary(slug) {

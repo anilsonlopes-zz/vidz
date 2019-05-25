@@ -103,3 +103,30 @@
   transform: translateY(50vh);
   opacity: 0;
 }
+
+
+.state-loading {
+  position: relative;
+  overflow: hidden;
+  background-color: #3D4852;
+}
+
+.state-loading:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  background-image: radial-gradient(circle, transparent, #313a42, transparent);
+  animation: state-loading 1s infinite alternate;
+}
+
+@keyframes state-loading {
+  from, 50%, 90%, to {
+    opacity: 0;
+  }
+  30%, 70% {
+    opacity: 1;
+  }
+}
