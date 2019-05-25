@@ -22,7 +22,7 @@ export default {
   computed: {
     className() {
       const types = {
-        default: 'bg-black text-grey-light',
+        default: 'bg-grey-dark text-grey-light',
         success: 'bg-green-dark text-white border border-green',
         info: 'bg-blue-dark text-white border border-blue',
         warning: 'bg-orange-dark text-white border border-orange',

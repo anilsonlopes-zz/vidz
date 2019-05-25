@@ -2,7 +2,7 @@
   <div>
     <div
       aria-label="Informações do post"
-      class="select-none py-4 px-2"
+      class="select-none py-4 px-2 min-h-screen md:min-h-0"
       :class="{ 'animated fadeIn faster': post.title }"
     >
       <div id="poster_libraries" class="w-full flex">
@@ -37,19 +37,19 @@
         </div>
       </div>
       <div class="w-full animated fadeIn fast">
-        <div id="title_plot">
+        <div id="title_year_type_seasons_plot">
           <h1
-            class="pb-2 text-grey-light font-serif"
+            class="pb-2 text-grey-light font-thin font-serif md:pt-4"
             :class="{ 'bg-grey-light w-full h-10 animated': !post.title }"
             aria-label="Título do post"
           >
             {{ post.title }}
           </h1>
           <div id="year_type_seasons" class="flex uppercase font-mono text-xxs text-grey-dark mt-2">
-            <div class="rounded px-4 py-1 mb-2 mr-3 bg-grey-lightest" aria-label="Ano de lançamento">
+            <div class="rounded px-4 py-1 mb-2 mr-3 bg-grey-darker" aria-label="Ano de lançamento">
               {{ post.year }}
             </div>
-            <div class="rounded px-4 py-1 mb-2 mr-3 bg-grey-lightest" aria-label="Tipo do post">
+            <div class="rounded px-4 py-1 mb-2 mr-3 bg-grey-darker" aria-label="Tipo do post">
               {{ post.type }}
             </div>
             <div v-if="post.type == 'series'" class="rounded px-4 py-1 mb-2 bg-grey-lightest" aria-label="Número de temporadas">
@@ -57,38 +57,26 @@
             </div>
           </div>
           <div
-            class="sm:block max-w-sm text-grey-dark pt-2"
+            id="plot"
+            class="sm:block max-w-sm text-grey pt-2"
             :class="{ 'bg-grey w-full h-32': !post.plot }"
             aria-label="Descrição do post"
           >
             {{ post.plot }}
           </div>
         </div>
-        <div id="actors_genres" class="pt-4 text-xs text-grey" :class="{ 'border-t-8 border-white w-full h-10 bg-grey-lighter': !post.actors }">
-          <div v-if="post.actors">
-            Estrelando: {{ post.actors }}
-          </div>
-          <div class="pt-1">
-            {{ post.genres }}
-          </div>
-        </div>
-        <div id="country_language" class="uppercase pt-3 pb-1 text-grey flex text-xs font-mono">
-          <div
-            class="border border-grey-light rounded py-2 px-2 mr-2"
-            :class="{ 'w-1/3 h-6': !post.country }"
+        <div v-if="post.genres" id="genres" class="pt-4 text-xs text-grey" :class="{ 'border-t-8 border-white w-full h-10 bg-grey-lighter': !post.actors }">
+          <span
+            v-for="(genre, index) in post.genres.split(',')"
+            :key="index"
+            class="inline-block border border-grey-light rounded py-2 px-2 mr-2 mb-2"
           >
-            {{ post.country }}
-          </div>
-          <div
-            class="border border-grey-light rounded py-2 px-2"
-            :class="{ 'w-1/3 h-6': !post.language }"
-          >
-            {{ post.language }}
-          </div>
+            {{ genre.trim() }}
+          </span>
         </div>
       </div>
     </div>
-    <div class="pt-5 mt-5 border-t-2 border-grey-lighter">
+    <div class="pt-5">
       <nf-section
         v-for="(section, index) in sections"
         :key="index"
@@ -154,7 +142,7 @@ export default {
         this.addLibrary(library)
       } else {
         db.collection('libraries').doc(`${this.auth.uid}_${library.slug}_${this.post.id}`).delete().then(() => {
-          this.$store.commit('notification', { message: `Removi de ${library.label.toLowerCase()} para você`, type: 'default' })
+          this.$store.commit('notification', { message: `${library.label} -1`, type: 'default' })
         })
       }
     },
@@ -168,7 +156,7 @@ export default {
         })
         const ref = db.collection('libraries').doc(newLibrary.data.id)
         ref.set(newLibrary.data, { merge: true }).then(() => {
-          this.$store.commit('notification', { message: `Adicionei em ${library.label.toLowerCase()} para você`, type: 'default' })
+          this.$store.commit('notification', { message: `${library.label} +1`, type: 'success' })
         })
       } catch (error) {
         this.$store.commit('notification', { message: 'Tente novamente. Se não funcionar, fala com a gente.', type: 'error' })
