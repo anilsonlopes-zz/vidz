@@ -5,7 +5,7 @@
         {{ title }}
       </h3>
     </div>
-    <div class="py-2 px-1 overflow-x-visible overflow-y-hidden whitespace-no-wrap">
+    <div class="py-2 pl-1 overflow-x-visible overflow-y-hidden whitespace-no-wrap">
       <nuxt-link
         v-for="(item, index) in list"
         :key="item.id"

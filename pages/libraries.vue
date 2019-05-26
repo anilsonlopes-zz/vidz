@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1>libraries page</h1>
+    <div>
+      Library name
+    </div>
   </div>
 </template>
 
