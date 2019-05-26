@@ -38,7 +38,7 @@ export default {
       },
       {
         name: 'Search',
-        to: { name: 'posts-query' },
+        to: { name: 'explore-query' },
         icon: 'fa-search'
       },
       {

@@ -1,12 +1,12 @@
 <template>
   <div>
     <h2 class="uppercase font-serif text-grey-light ml-2 pb-1 mt-4 border-b border-grey-dark">
-      {{ librariesLabel[$route.query.slug] }}
+      {{ librariesLabel[$route.params.slug] }}
     </h2>
     <nf-message
       v-if="loaded == -1"
       emoji="👽"
-      :body="`First, add something in ${librariesLabel[$route.query.slug]}`"
+      :body="`First, add something in ${librariesLabel[$route.params.slug]}`"
       class="px-10"
     />
     <transition enter-active-class="animated fadeInUp faster">
@@ -64,7 +64,7 @@ export default {
   head: {
     title: 'Biblioteca'
   },
-  watchQuery: ['slug'],
+  watchQuery: true,
   layout: 'tube',
   data: () => ({
     libraries: [],
@@ -93,7 +93,7 @@ export default {
         this.loaded = 1
         let librariesRef = db.collection('libraries')
         librariesRef = librariesRef.where('userId', '==', this.auth.uid)
-        librariesRef = librariesRef.where('slug', '==', this.$route.query.slug)
+        librariesRef = librariesRef.where('slug', '==', this.$route.params.slug)
         librariesRef.get().then((querySnapshot) => {
           this.loaded = querySnapshot.empty ? -1 : this.loaded
           this.libraries = parseData(querySnapshot)

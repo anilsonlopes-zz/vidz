@@ -94,11 +94,12 @@ export default {
   },
   methods: {
     handleSearch() {
-      this.$router.replace({ name: 'posts-query', params: { query: this.search.toLowerCase() } })
+      this.$router.replace({ name: 'explore-query', params: { query: this.search.toLowerCase() } })
     },
     focusInputSearch() {
       // FIXME: Scroll to top
       this.$refs.inputSearch.focus()
+      this.$refs.inputSearch.value = this.$route.params.slug.replace('-', ' ')
     }
   }
 }
