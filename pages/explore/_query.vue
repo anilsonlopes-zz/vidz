@@ -1,14 +1,14 @@
 <template>
   <div>
     <div id="search" class="w-full px-0 relative">
-      <button type="button" class="absolute pin-t pin-l ml-4 mt-6 text-grey bg-transparent border-none">
+      <button type="button" class="absolute pin-t pin-l ml-4 mt-4 text-grey bg-transparent border-none">
         <i class="fa fa-search" />
       </button>
       <input
         ref="inputSearch"
         v-model="search"
         type="text"
-        class="w-full mt-4 pl-12 pr-2 text-grey-light bg-transparent transition border-b border-transparent focus:border-white focus:outline-none leading-loose"
+        class="w-full my-2 pl-12 pr-2 pb-2 text-grey-light bg-transparent transition border-b-2 border-transparent focus:outline-none leading-loose"
         placeholder="Buscar..."
         @keyup.enter="handleSearch"
       >
@@ -71,13 +71,15 @@ export default {
   },
   methods: {
     handleSearch() {
-      this.$router.replace({ name: 'explore-query', params: { query: this.search.toLowerCase() } })
+      if (this.search) {
+        this.$router.replace({ name: 'explore-query', params: { query: this.search.toLowerCase() } })
+      }
     },
     focusInputSearch() {
       // FIXME: Scroll to top
       this.$refs.inputSearch.focus()
-      if (this.$route.params.slug) {
-        this.search = this.$route.params.slug.replace('-', ' ')
+      if (this.$route.params.query) {
+        this.search = this.$route.params.query.replace('-', ' ')
       }
     }
   }
