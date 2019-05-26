@@ -25,7 +25,7 @@
             @click="toggleLibrary(library)"
           >
             <i class="fa" :class="`${library.icon}`" />
-            <span class="font-mono ml-2">
+            <span v-if="library.count > 10" class="font-mono ml-2">
               {{ library.count }}
             </span>
           </button>
@@ -133,7 +133,24 @@ export default {
     ...mapGetters(['auth'])
   },
   mounted() {
-    this.fetchPost().then(this.fetchLibraries)
+    if (!this.$route.params.slug) {
+      this.$router.replace('/404')
+    }
+    const ref = db.collection('posts').where('slug', '==', this.$route.params.slug)
+    ref.get().then((response) => {
+      if (response.empty) {
+        this.$router.replace('/404')
+      } else {
+        const post = parseData(response)[0]
+        const sections = Object.keys(post.search.genres).map(genre => ({
+          title: genre.trim(),
+          query: [`search.genres.${genre}`, '==', true]
+        }))
+        this.post = post
+        this.sections = sections
+      }
+      this.fetchLibraries()
+    })
   },
   methods: {
     toggleLibrary(library) {
@@ -166,28 +183,15 @@ export default {
         let ref = db.collection('libraries')
         ref = ref.where('postId', '==', this.post.id)
         ref = ref.where('slug', '==', library.slug)
-        ref.onSnapshot((querySnapshot) => {
+        ref.get().then((querySnapshot) => {
           this.librariesPublic.find(l => l.slug === library.slug).count = querySnapshot.size
           this.userHaveThisLibrary(library.slug)
         })
       })
     },
-    fetchPost() {
-      return db.collection('posts').where('slug', '==', this.$route.params.slug).get().then((posts) => {
-        const post = parseData(posts)[0]
-        const sections = Object.keys(post.search.genres).map(genre => ({
-          title: genre.trim(),
-          query: [`search.genres.${genre}`, '==', true]
-        }))
-        window.setTimeout(() => {
-          this.post = post
-          this.sections = sections
-        }, 2000)
-      })
-    },
     userHaveThisLibrary(slug) {
       const ref = db.collection('libraries').where('slug', '==', slug).where('postId', '==', this.post.id).where('userId', '==', this.auth.uid)
-      ref.get().then((querySnapshot) => {
+      ref.onSnapshot((querySnapshot) => {
         this.librariesPublic.find(l => l.slug === slug).have = !querySnapshot.empty
       })
     }
