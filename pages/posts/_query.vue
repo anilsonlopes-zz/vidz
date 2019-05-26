@@ -1,17 +1,26 @@
 <template>
   <div>
     <div class="w-full relative">
-      <button type="button" class="absolute pin-t pin-l ml-4 mt-2 text-grey bg-transparent border-none">
+      <button type="button" class="absolute pin-t pin-l ml-4 mt-6 text-grey bg-transparent border-none">
         <i class="fa fa-search" />
       </button>
-      <input v-model="search" type="text" class="w-full rounded focus:outline-none focus:border-grey leading-loose transition border border-white bg-transparent pl-10 pl-4 text-grey-darker" placeholder="Buscar..." @keyup.enter="handleSearch">
+      <input
+        ref="inputSearch"
+        v-model="search"
+        type="text"
+        class="max-w-full mt-4 ml-12 px-2 text-grey-light bg-transparent border-b focus:outline-none leading-loose"
+        placeholder="Buscar..."
+        @keyup.enter="handleSearch"
+      >
     </div>
     <nf-message
-      title="..."
+      v-if="empty"
+      title="Ops..."
       emoji="👽"
-      message="Se você acredita que algo está errado, faça contato. Adoramos isso."
+      body="Se você acredita que deveria haver algo aqui, faça contato. Adoramos isso."
+      class="px-5"
     />
-    <div class="mt-4 py-2 px-1">
+    <div v-else class="mt-4 py-2 px-1">
       <nuxt-link
         v-for="(post, index) in posts"
         :key="post.id"
@@ -58,7 +67,7 @@
 import { db, parseData } from '~/services/firebase'
 
 export default {
-  transition: 'fadeInBottom',
+  transition: 'fadeIn',
   head: {
     title: 'Assista'
   },
@@ -69,21 +78,27 @@ export default {
   }),
   async asyncData({ params, $axios }) {
     let ref = db.collection('posts')
-    params.query.split('').map((letter) => {
-      ref = ref.where(`search.title.${letter}`, '==', true)
-    })
+    if (params.query) {
+      params.query.split('').map((letter) => {
+        ref = ref.where(`search.title.${letter}`, '==', true)
+      })
+    }
     const querySnapshot = await ref.get()
     return {
       posts: parseData(querySnapshot),
       empty: querySnapshot.empty
     }
   },
+  mounted() {
+    this.focusInputSearch()
+  },
   methods: {
     handleSearch() {
-      if (!this.search.trim()) {
-        return this.$router.replace({ name: 'index' })
-      }
       this.$router.replace({ name: 'posts-query', params: { query: this.search.toLowerCase() } })
+    },
+    focusInputSearch() {
+      // FIXME: Scroll to top
+      this.$refs.inputSearch.focus()
     }
   }
 }

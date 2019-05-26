@@ -37,19 +37,19 @@ export default {
         icon: 'fa-home'
       },
       {
-        name: 'Liked',
-        to: { name: 'library', query: { slug: 'liked' } },
-        icon: 'fa-heart'
+        name: 'Search',
+        to: { name: 'posts-query' },
+        icon: 'fa-search'
       },
       {
-        name: 'Watched',
-        to: { name: 'library', query: { slug: 'watched' } },
-        icon: 'fa-check'
+        name: 'Libraries',
+        to: { name: 'libraries' },
+        icon: 'fa-folder'
       },
       {
-        name: 'Watch later',
-        to: { name: 'library', query: { slug: 'watch-later' } },
-        icon: 'fa-clock-o'
+        name: 'Settings',
+        to: { name: 'settings' },
+        icon: 'fa-cog'
       }
     ]
   }),

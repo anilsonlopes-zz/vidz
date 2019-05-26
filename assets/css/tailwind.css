@@ -104,6 +104,15 @@
   opacity: 0;
 }
 
+.fadeIn-enter-active,
+.fadeIn-leave-active {
+  transition: all .5s cubic-bezier(.55,0,.1,1);
+}
+
+.fadeIn-enter,
+.fadeIn-leave-active {
+  opacity: 0;
+}
 
 .state-loading {
   position: relative;
