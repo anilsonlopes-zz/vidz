@@ -1,6 +1,6 @@
 <template>
   <section>
-    <nf-section title="Releases of the year" :query="['search.year', '==', 2019]" :transition="true" class="mt-4" />
+    <nf-section title="Releases of the year" :query="['search.year', '==', 2019]" :transition="true" class="mt-2" />
     <nf-section title="Sci-fi" :query="['search.genres.sci-fi', '==', true]" :transition="true" class="mt-4" />
     <nf-section title="Children's content" :query="['rated', '==', 'TV-Y']" :transition="true" class="mt-4" />
     <nf-section title="No gender" :query="['search.genres.na', '==', true]" :transition="true" class="mt-4" />

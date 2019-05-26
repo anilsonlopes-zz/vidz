@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="search" class="w-full px-0 relative">
+    <div id="search" class="w-full px-2 relative">
       <button type="button" class="absolute pin-t pin-l ml-4 mt-4 text-grey bg-transparent border-none">
         <i class="fa fa-search" />
       </button>
