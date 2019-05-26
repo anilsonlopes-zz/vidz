@@ -87,7 +87,6 @@ import Library from '~/models/Library.js'
 import { mapGetters } from 'vuex'
 
 export default {
-  transition: 'fadeInBottom',
   layout: 'tube',
   head() {
     return {

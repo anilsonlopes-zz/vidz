@@ -1,9 +1,9 @@
 <template>
-  <div class="z-50 fixed pin-r pin-b pin-l bg-grey-darkest flex justify-around items-center">
+  <div class="z-50 overflow-hidden fixed pin-r pin-b pin-l bg-grey-darkest flex justify-around items-center">
     <nuxt-link
       v-for="(item, index) in items"
       :key="index"
-      :class="`${classMenuItem} ${item.to.name == $route.name ? 'bg-black border-grey-darkest' : 'text-grey-light'}`"
+      :class="`${classMenuItem} ${item.to.name == $route.name ? 'bg-grey-darkest shadow-strong' : 'text-grey-light'}`"
       :to="item.to"
     >
       <i class="fa text-grey-light" :class="item.icon" />
@@ -17,7 +17,7 @@ import { mapGetters } from 'vuex'
 export default {
   data: () => ({
     pkg: require('~/package.json'),
-    classMenuItem: 'flex flex-col w-1/4 items-center justify-center transition p-5 no-underline text-sm border-t border-black',
+    classMenuItem: 'flex flex-col overflow-hidden w-1/4 items-center justify-center transition p-5 no-underline text-sm',
     items: [
       {
         name: 'Home',

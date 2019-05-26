@@ -47,7 +47,6 @@
 import { db, parseData } from '~/services/firebase'
 
 export default {
-  transition: 'fadeInBottom',
   head: {
     title: 'Assista'
   },

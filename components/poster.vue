@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-64 w-full bg-cover bg-center rounded-lg"
+    class="transition h-64 w-full bg-cover bg-center rounded-lg"
     :style="style"
   />
 </template>
@@ -11,7 +11,7 @@ export default {
     color: {
       type: String,
       required: false,
-      default: '#ff1'
+      default: '#013'
     },
     src: {
       type: String,

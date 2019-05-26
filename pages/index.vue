@@ -21,7 +21,6 @@ export default {
   layout: 'tube',
   head: {
     title: 'Início'
-  },
-  transition: 'fadeIn'
+  }
 }
 </script>

@@ -42,7 +42,6 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  transition: 'fadeIn',
   head: {
     title: 'Assista'
   },
