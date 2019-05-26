@@ -5,13 +5,7 @@
       class="select-none py-4 px-2 min-h-screen md:min-h-0"
     >
       <div id="poster_libraries" class="w-full flex">
-        <div>
-          <div
-            class="h-64 w-full bg-grey-darkest bg-cover  bg-center rounded-lg"
-            :class="{ 'state-loading': !post.poster }"
-            :style="{ 'background-image': `url(${post.poster})`, 'width': '13rem' }"
-          />
-        </div>
+        <nf-poster :src="post.poster" />
         <div v-if="auth" id="libraries" class="w-full h-64 flex flex-col justify-between ml-4">
           <button
             v-for="(library, index) in librariesPublic"

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="w-full relative">
+    <div id="search" class="w-full px-0 relative">
       <button type="button" class="absolute pin-t pin-l ml-4 mt-6 text-grey bg-transparent border-none">
         <i class="fa fa-search" />
       </button>
@@ -8,7 +8,7 @@
         ref="inputSearch"
         v-model="search"
         type="text"
-        class="max-w-full mt-4 ml-12 px-2 text-grey-light bg-transparent border-b focus:outline-none leading-loose"
+        class="w-full mt-4 pl-12 pr-2 text-grey-light bg-transparent transition border-b border-transparent focus:border-white focus:outline-none leading-loose"
         placeholder="Buscar..."
         @keyup.enter="handleSearch"
       >
@@ -20,43 +20,18 @@
       body="Se você acredita que deveria haver algo aqui, faça contato. Adoramos isso."
       class="px-5"
     />
-    <div v-else class="mt-4 py-2 px-1">
+    <div v-else class="flex flex-wrap">
       <nuxt-link
-        v-for="(post, index) in posts"
+        v-for="post in posts"
         :key="post.id"
-        class="overflow-hidden flex flex-col sm:flex-row w-full md:mb-8 no-underline hover:bg-grey-lighter p-2 transition"
-        :class="{ 'pt-8 sm:pt-2 border-t sm:border-0': index > 0 }"
+        class="flex flex-col w-1/2 no-underline p-2"
         :to="{ name: 'post-slug', params: { slug: post.slug } }"
       >
         <div>
-          <div
-            class="h-64 bg-grey bg-cover bg-center"
-            :style="{ 'width': '13rem', 'background-image': `url(${post.poster})` }"
-          />
+          <nf-poster :src="post.poster" />
         </div>
-        <div class="md:w-full flex flex-col md:justify-between h-auto md:h-64 pt-4 sm:pl-4">
-          <div>
-            <div class="rounded px-4 py-1 mb-2 text-xxs text-grey-dark bg-grey-lightest shadow inline-block uppercase font-mono">
-              {{ post.type }}
-            </div>
-            <div class="text-grey-darker md:text-3xl">
-              {{ post.title }}
-            </div>
-            <div class="sm:block max-w-sm text-grey-dark pt-2">
-              {{ post.plot | truncate(99) }}
-            </div>
-          </div>
-          <div class="text-xs font-mono uppercase pt-2">
-            <div class="pb-1 text-grey">
-              {{ post.runtime }}
-            </div>
-            <div class="pb-1 text-grey-dark">
-              {{ post.genre }}
-            </div>
-            <div class="hidden md:block text-grey">
-              Atores: {{ post.actors }}
-            </div>
-          </div>
+        <div class="text-grey font-thin font-serif text-lg py-2 pr-2 pb-2 uppercase">
+          {{ post.title }}
         </div>
       </nuxt-link>
     </div>
@@ -74,7 +49,9 @@ export default {
   watchQuery: ['type'],
   layout: 'tube',
   data: () => ({
-    search: ''
+    search: '',
+    empty: false,
+    posts: []
   }),
   async asyncData({ params, $axios }) {
     let ref = db.collection('posts')
@@ -82,11 +59,11 @@ export default {
       params.query.split('').map((letter) => {
         ref = ref.where(`search.title.${letter}`, '==', true)
       })
-    }
-    const querySnapshot = await ref.get()
-    return {
-      posts: parseData(querySnapshot),
-      empty: querySnapshot.empty
+      const querySnapshot = await ref.get()
+      return {
+        posts: parseData(querySnapshot),
+        empty: querySnapshot.empty
+      }
     }
   },
   mounted() {
@@ -99,7 +76,9 @@ export default {
     focusInputSearch() {
       // FIXME: Scroll to top
       this.$refs.inputSearch.focus()
-      this.$refs.inputSearch.value = this.$route.params.slug.replace('-', ' ')
+      if (this.$route.params.slug) {
+        this.search = this.$route.params.slug.replace('-', ' ')
+      }
     }
   }
 }

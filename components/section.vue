@@ -14,11 +14,7 @@
         :style="transition ? { 'animation-delay': `${index}00ms`, 'pointer-events': !item.slug ? 'none' : '' } : {}"
         :to="{ name: 'post-slug', params: { slug: item.slug } }"
       >
-        <div
-          class="item"
-          :class="classItem"
-          :style="{ 'background-image': `url(${item.poster})` }"
-        />
+        <nf-poster :src="item.poster" />
         <div class="text-grey-dark truncate pt-2">
           {{ item.title }}
         </div>
@@ -55,8 +51,7 @@ export default {
       { id: 3, title: '', poster: '' },
       { id: 4, title: '', poster: '' },
       { id: 5, title: '', poster: '' }
-    ],
-    classItem: 'md:h-64 h-32 p-3 bg-cover bg-center bg-grey-darker'
+    ]
   }),
   mounted() {
     if (this.query) {
