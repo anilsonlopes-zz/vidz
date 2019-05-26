@@ -8,7 +8,7 @@
         ref="inputSearch"
         v-model="search"
         type="text"
-        class="w-full my-2 pl-12 pr-2 pb-2 text-grey-light bg-transparent transition border-b-2 border-transparent focus:outline-none leading-loose"
+        class="w-full my-2 pr-2 pl-10 text-grey-darker bg-grey-light transition focus:bg-grey-darkest focus:text-grey focus:outline-none leading-loose"
         placeholder="Buscar..."
         @keyup.enter="handleSearch"
       >
@@ -46,17 +46,17 @@ export default {
   head: {
     title: 'Assista'
   },
-  watchQuery: ['type'],
+  watchQuery: true,
   layout: 'tube',
   data: () => ({
     search: '',
     empty: false,
     posts: []
   }),
-  async asyncData({ params, $axios }) {
+  async asyncData({ query, $axios }) {
     let ref = db.collection('posts')
-    if (params.query) {
-      params.query.split('').map((letter) => {
+    if (query.s) {
+      query.s.split('').map((letter) => {
         ref = ref.where(`search.title.${letter}`, '==', true)
       })
       const querySnapshot = await ref.get()
@@ -66,20 +66,10 @@ export default {
       }
     }
   },
-  mounted() {
-    this.focusInputSearch()
-  },
   methods: {
     handleSearch() {
       if (this.search) {
-        this.$router.replace({ name: 'explore-query', params: { query: this.search.toLowerCase() } })
-      }
-    },
-    focusInputSearch() {
-      // FIXME: Scroll to top
-      this.$refs.inputSearch.focus()
-      if (this.$route.params.query) {
-        this.search = this.$route.params.query.replace('-', ' ')
+        this.$router.replace({ query: { s: this.search.toLowerCase() } })
       }
     }
   }

@@ -1,27 +1,15 @@
 <template>
-  <div class="z-50 fixed pin-r pin-b pin-l bg-grey-darkest flex justify-around items-center py-2">
+  <div class="z-50 fixed pin-r pin-b pin-l bg-grey-darkest flex justify-around items-center">
     <nuxt-link
       v-for="(item, index) in items"
       :key="index"
-      :class="classMenuItem"
+      :class="`${classMenuItem} ${item.to.name == $route.name ? 'bg-black border-grey-darkest' : 'text-grey-light'}`"
       :to="item.to"
     >
       <i class="fa text-grey-light" :class="item.icon" />
-      <span class="transition bubble inline-block w-1 h-1 rounded-full bg-grey-lightest mt-2" />
     </nuxt-link>
   </div>
 </template>
-
-<style scoped>
-.bubble {
-  display: none;
-  height: 0;
-}
-.menu-item.nuxt-link-exact-active .bubble {
-  display: block;
-  height: .25rem;
-}
-</style>
 
 <script>
 import { mapGetters } from 'vuex'
@@ -29,7 +17,7 @@ import { mapGetters } from 'vuex'
 export default {
   data: () => ({
     pkg: require('~/package.json'),
-    classMenuItem: 'menu-item flex flex-col items-center justify-center transition py-2 px-3 no-underline text-grey-light mx-3 text-sm',
+    classMenuItem: 'flex flex-col w-1/4 items-center justify-center transition p-5 no-underline text-sm border-t border-black',
     items: [
       {
         name: 'Home',
@@ -38,7 +26,7 @@ export default {
       },
       {
         name: 'Search',
-        to: { name: 'explore-query' },
+        to: { name: 'explore' },
         icon: 'fa-search'
       },
       {
