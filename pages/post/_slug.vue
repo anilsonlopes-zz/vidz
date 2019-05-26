@@ -3,7 +3,6 @@
     <div
       aria-label="Informações do post"
       class="select-none py-4 px-2 min-h-screen md:min-h-0"
-      :class="{ 'animated fadeIn faster': post.title }"
     >
       <div id="poster_libraries" class="w-full flex">
         <div>
