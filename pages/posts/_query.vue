@@ -6,17 +6,11 @@
       </button>
       <input v-model="search" type="text" class="w-full rounded focus:outline-none focus:border-grey leading-loose transition border border-white bg-transparent pl-10 pl-4 text-grey-darker" placeholder="Buscar..." @keyup.enter="handleSearch">
     </div>
-    <div v-if="empty" class="text-center">
-      <div class="text-2xl my-10 text-grey-light uppercase">
-        ...
-      </div>
-      <div class="text-5xl">
-        👽
-      </div>
-      <div class="font-mono text-grey text-sm mt-10 max-w-sm mx-auto">
-        Se você acredita que algo está errado, faça contato. Adoramos isso.
-      </div>
-    </div>
+    <nf-message
+      title="..."
+      emoji="👽"
+      message="Se você acredita que algo está errado, faça contato. Adoramos isso."
+    />
     <div class="mt-4 py-2 px-1">
       <nuxt-link
         v-for="(post, index) in posts"

@@ -3,6 +3,12 @@
     <h2 class="uppercase font-serif text-grey-light ml-2 pb-1 mt-4 border-b border-grey-dark">
       {{ librariesLabel[$route.query.slug] }}
     </h2>
+    <nf-message
+      v-if="loaded == -1"
+      emoji="👽"
+      :body="`First, add something in ${librariesLabel[$route.query.slug]}`"
+      class="px-10"
+    />
     <transition enter-active-class="animated fadeInUp faster">
       <div v-if="loaded == 2" class="py-2 px-1">
         <div
@@ -89,7 +95,7 @@ export default {
         librariesRef = librariesRef.where('userId', '==', this.auth.uid)
         librariesRef = librariesRef.where('slug', '==', this.$route.query.slug)
         librariesRef.get().then((querySnapshot) => {
-          this.count = querySnapshot.size
+          this.loaded = querySnapshot.empty ? -1 : this.loaded
           this.libraries = parseData(querySnapshot)
           this.fetchPosts()
         })
