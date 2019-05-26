@@ -39,7 +39,7 @@
       <div class="w-full fadeIn fast">
         <div id="title_year_type_seasons_plot">
           <h1
-            class="pb-2 text-grey-light font-thin font-serif md:mt-4"
+            class="py-2 text-grey-light font-thin font-serif"
             :class="{ 'state-loading rounded-lg mt-4 w-full h-10': !post.title }"
             aria-label="Título do post"
           >
