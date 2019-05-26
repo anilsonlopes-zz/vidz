@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <div class="text-2xl my-10 text-grey-light uppercase">
+    <div class="text-2xl my-10 text-grey-light font-serif">
       {{ title }}
     </div>
     <div class="text-5xl">
