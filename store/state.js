@@ -1,4 +1,6 @@
 export default () => ({
   auth: null,
-  notifications: []
+  notifications: [],
+  exploreText: '',
+  exploreResult: []
 })

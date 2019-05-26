@@ -12,3 +12,11 @@ export const notification = function (state, notification) {
 export const removeNotification = function (state, id) {
   state.notifications = state.notifications.filter(notification => !(notification.id === id))
 }
+
+export const exploreText = function (state, text) {
+  state.exploreText = text
+}
+
+export const exploreResult = function (state, result) {
+  state.exploreResult = result
+}

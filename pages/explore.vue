@@ -6,7 +6,7 @@
       </button>
       <input
         ref="inputSearch"
-        v-model="search"
+        v-model="exploreText"
         type="text"
         class="w-full my-2 pr-2 pl-10 text-grey-darker bg-grey-light transition focus:bg-grey-darkest focus:text-grey focus:outline-none leading-loose"
         placeholder="Buscar..."
@@ -14,15 +14,15 @@
       >
     </div>
     <nf-message
-      v-if="empty"
+      v-if="!exploreResult"
       title="Ops..."
       emoji="👽"
-      body="Se você acredita que deveria haver algo aqui, faça contato. Adoramos isso."
+      body="Primeiro faça a sua busca, se não encontrar nada, faça contato. Adoramos isso."
       class="px-5"
     />
     <div v-else class="flex flex-wrap">
       <nuxt-link
-        v-for="post in posts"
+        v-for="post in exploreResult"
         :key="post.id"
         class="flex flex-col w-1/2 no-underline p-2"
         :to="{ name: 'post-slug', params: { slug: post.slug } }"
@@ -39,38 +39,28 @@
 </template>
 
 <script>
-import { db, parseData } from '~/services/firebase'
+import { mapGetters } from 'vuex'
 
 export default {
   transition: 'fadeIn',
   head: {
     title: 'Assista'
   },
-  watchQuery: true,
   layout: 'tube',
-  data: () => ({
-    search: '',
-    empty: false,
-    posts: []
-  }),
-  async asyncData({ query, $axios }) {
-    let ref = db.collection('posts')
-    if (query.s) {
-      query.s.split('').map((letter) => {
-        ref = ref.where(`search.title.${letter}`, '==', true)
-      })
-      const querySnapshot = await ref.get()
-      return {
-        posts: parseData(querySnapshot),
-        empty: querySnapshot.empty
+  computed: {
+    ...mapGetters(['exploreResult']),
+    exploreText: {
+      get() {
+        return this.$store.getters.exploreText
+      },
+      set(value) {
+        this.$store.commit('exploreText', value)
       }
     }
   },
   methods: {
     handleSearch() {
-      if (this.search) {
-        this.$router.replace({ query: { s: this.search.toLowerCase() } })
-      }
+      this.$store.dispatch('explore', this.exploreText.toLowerCase())
     }
   }
 }
