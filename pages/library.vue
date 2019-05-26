@@ -1,7 +1,10 @@
 <template>
   <div>
+    <h2 class="uppercase font-serif text-grey-light ml-2 pb-1 mt-4 border-b border-grey-dark">
+      {{ librariesLabel[$route.query.slug] }}
+    </h2>
     <transition enter-active-class="animated fadeInUp faster">
-      <div v-if="loaded == 2" class="mt-4 py-2 px-1">
+      <div v-if="loaded == 2" class="py-2 px-1">
         <div
           v-for="(post, index) in posts"
           :key="post.id"
@@ -10,7 +13,7 @@
           <nuxt-link
             v-if="post"
             class="overflow-hidden flex flex-col sm:flex-row w-full no-underline hover:bg-grey-lighter p-2 transition"
-            :class="{ 'pt-8 sm:pt-2 border-t sm:border-0': index > 0 }"
+            :class="{ 'pt-8 sm:pt-2': index > 0 }"
             :to="{ name: 'post-slug', params: { slug: post.slug } }"
           >
             <div>
@@ -25,21 +28,17 @@
                   {{ post.type }}
                 </div>
                 <div class="text-grey-darker md:text-3xl">
-                  {{ post.title }}
+                  <h3 class="text-grey font-thin font-serif text-xl uppercase">
+                    {{ post.title }}
+                  </h3>
                 </div>
                 <div class="sm:block max-w-sm text-grey-dark pt-2">
                   {{ post.plot | truncate(99) }}
                 </div>
               </div>
               <div class="text-xs font-mono uppercase pt-2">
-                <div class="pb-1 text-grey">
-                  {{ post.runtime }}
-                </div>
                 <div class="pb-1 text-grey-dark">
-                  {{ post.genre }}
-                </div>
-                <div class="hidden md:block text-grey">
-                  Atores: {{ post.actors }}
+                  {{ post.genres }}
                 </div>
               </div>
             </div>
@@ -64,7 +63,12 @@ export default {
   data: () => ({
     libraries: [],
     posts: [],
-    loaded: 0
+    loaded: 0,
+    librariesLabel: {
+      'liked': 'Liked',
+      'watched': 'Watched',
+      'watch-later': 'Watch later'
+    }
   }),
   computed: {
     ...mapGetters(['auth'])

@@ -2,7 +2,9 @@
   <div class="overflow-hidden min-h-screen font-sans bg-black">
     <div class="flex">
       <div class="w-full px-2">
-        <nuxt />
+        <div class="pb-20">
+          <nuxt />
+        </div>
         <nf-navbar />
       </div>
     </div>

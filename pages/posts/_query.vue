@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div class="w-full relative">
+      <button type="button" class="absolute pin-t pin-l ml-4 mt-2 text-grey bg-transparent border-none">
+        <i class="fa fa-search" />
+      </button>
+      <input v-model="search" type="text" class="w-full rounded focus:outline-none focus:border-grey leading-loose transition border border-white bg-transparent pl-10 pl-4 text-grey-darker" placeholder="Buscar..." @keyup.enter="handleSearch">
+    </div>
     <div v-if="empty" class="text-center">
       <div class="text-2xl my-10 text-grey-light uppercase">
         ...
@@ -64,6 +70,9 @@ export default {
   },
   watchQuery: ['type'],
   layout: 'tube',
+  data: () => ({
+    search: ''
+  }),
   async asyncData({ params, $axios }) {
     let ref = db.collection('posts')
     params.query.split('').map((letter) => {
@@ -73,6 +82,14 @@ export default {
     return {
       posts: parseData(querySnapshot),
       empty: querySnapshot.empty
+    }
+  },
+  methods: {
+    handleSearch() {
+      if (!this.search.trim()) {
+        return this.$router.replace({ name: 'index' })
+      }
+      this.$router.replace({ name: 'posts-query', params: { query: this.search.toLowerCase() } })
     }
   }
 }
