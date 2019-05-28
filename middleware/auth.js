@@ -15,7 +15,7 @@ export default function ({ store, route, redirect }) {
       if (!user) {
         return redirect(401, '/login')
       }
-      store.dispatch('auth', user.uid)
+      store.dispatch('authenticated', user.uid)
     })
   }
 }

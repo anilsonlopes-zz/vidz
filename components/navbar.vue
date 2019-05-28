@@ -1,26 +1,13 @@
 <template>
-  <div class="z-50 flex justify-between items-center py-2">
+  <div class="z-50 overflow-hidden fixed pin-r pin-b pin-l bg-grey-darkest flex justify-around items-center">
     <nuxt-link
-      v-if="$route.name != 'index'"
-      :to="{ name: 'index' }"
-      class="p-4 text-grey-darker focus:text-blue focus:outline-none transition"
+      v-for="(item, index) in items"
+      :key="index"
+      :class="`${classMenuItem} ${item.to.name == $route.name ? 'bg-grey-darkest shadow-strong' : 'text-grey-light'}`"
+      :to="item.to"
     >
-      <i class="fa fa-undo" />
+      <i class="fa text-grey-light" :class="item.icon" />
     </nuxt-link>
-    <div class="w-full relative">
-      <button type="button" class="absolute pin-t pin-l ml-4 mt-2 text-grey bg-transparent border-none">
-        <i class="fa fa-search" />
-      </button>
-      <input v-model="search" type="text" class="w-full rounded focus:outline-none focus:border-grey-lighter leading-loose transition border border-white bg-transparent pl-10 pl-4 text-grey-darker" placeholder="Buscar..." @keyup.enter="handleSearch">
-    </div>
-    <transition enter-active-class="animated fadeInRight fast" leave-active-class="animated fadeOut">
-      <div v-if="auth" class="flex items-center pr-4">
-        <button type="button" class="mx-6 focus:outline-none text-grey bg-transparent border-none">
-          <i class="fa fa-bell" />
-        </button>
-        <span class="w-10 h-10 bg-cover inline-block rounded-full" :style="{ 'background-image': `url(${auth.avatar})` }" />
-      </div>
-    </transition>
   </div>
 </template>
 
@@ -30,41 +17,32 @@ import { mapGetters } from 'vuex'
 export default {
   data: () => ({
     pkg: require('~/package.json'),
-    classMenuItem: 'no-underline text-grey hover:text-grey-dark mx-3 text-sm',
-    search: '',
+    classMenuItem: 'flex flex-col overflow-hidden w-1/4 items-center justify-center transition p-5 no-underline text-sm',
     items: [
       {
-        name: 'Início',
-        to: { name: 'index' }
+        name: 'Home',
+        to: { name: 'index' },
+        icon: 'fa-home'
       },
       {
-        name: 'Filmes',
-        to: { name: 'index' }
+        name: 'Search',
+        to: { name: 'explore' },
+        icon: 'fa-search'
       },
       {
-        name: 'Series',
-        to: { name: 'index' }
+        name: 'Libraries',
+        to: { name: 'libraries' },
+        icon: 'fa-folder'
       },
       {
-        name: 'Pedidos',
-        to: { name: 'index' }
-      },
-      {
-        name: 'Minha lista',
-        to: { name: 'index' }
+        name: 'Settings',
+        to: { name: 'settings' },
+        icon: 'fa-cog'
       }
     ]
   }),
   computed: {
     ...mapGetters(['auth'])
-  },
-  methods: {
-    handleSearch() {
-      if (!this.search.trim()) {
-        return this.$router.replace({ name: 'index' })
-      }
-      this.$router.replace({ name: 'posts-query', params: { query: this.search.toLowerCase() } })
-    }
   }
 }
 </script>

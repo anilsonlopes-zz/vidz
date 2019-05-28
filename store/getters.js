@@ -4,5 +4,11 @@ export default {
   },
   notifications(state) {
     return state.notifications
+  },
+  exploreText(state) {
+    return state.exploreText
+  },
+  exploreResult(state) {
+    return state.exploreResult
   }
 }

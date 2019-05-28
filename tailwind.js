@@ -205,6 +205,7 @@ module.exports = {
       'sans-serif'
     ],
     'serif': [
+      'Concert One',
       'Constantia',
       'Lucida Bright',
       'Lucidabright',
@@ -217,7 +218,6 @@ module.exports = {
       'serif'
     ],
     'mono': [
-      'Fira Mono',
       'Menlo',
       'Monaco',
       'Consolas',

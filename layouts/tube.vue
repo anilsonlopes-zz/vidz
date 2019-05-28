@@ -1,20 +1,22 @@
 <template>
-  <div class="overflow-hidden min-h-screen font-sans">
+  <div class="overflow-hidden min-h-screen font-sans bg-black">
     <div class="flex">
-      <nf-sidebar />
-      <div id="content" class="w-full px-2 content">
+      <div class="w-full">
+        <div class="pb-20">
+          <nuxt />
+        </div>
         <nf-navbar />
-        <nuxt />
       </div>
     </div>
     <nf-notifications />
   </div>
 </template>
 
-<style scoped>
-@media (min-width: 768px) {
-  .content {
-    padding-left: 17rem;
+<script>
+export default {
+  components: {
+    'nf-navbar': () => import('~/components/navbar.vue'),
+    'nf-notifications': () => import('~/components/notifications.vue')
   }
 }
-</style>
+</script>

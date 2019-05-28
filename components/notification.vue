@@ -22,7 +22,7 @@ export default {
   computed: {
     className() {
       const types = {
-        default: 'bg-black text-grey-light',
+        default: 'bg-grey-dark text-grey-light',
         success: 'bg-green-dark text-white border border-green',
         info: 'bg-blue-dark text-white border border-blue',
         warning: 'bg-orange-dark text-white border border-orange',
@@ -35,10 +35,6 @@ export default {
     const duration = this.notification.duration || 5
     window.setTimeout(() => {
       this.$refs.notification.classList.add('fadeOutDown')
-      // FIXME: Remove notification after 'transitionend'
-      window.setTimeout(() => {
-        this.$store.commit('removeNotification', this.notification.id)
-      }, 500)
     }, duration * 1000)
   }
 }

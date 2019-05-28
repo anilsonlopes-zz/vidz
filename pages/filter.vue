@@ -47,14 +47,16 @@
 import { db, parseData } from '~/services/firebase'
 
 export default {
-  transition: 'fadeInBottom',
   head: {
     title: 'Assista'
   },
   watchQuery: ['type'],
   layout: 'tube',
   async asyncData({ query, $axios }) {
-    const ref = db.collection('posts').where('type', '==', query.type)
+    let ref = db.collection('posts')
+    if (query.type) {
+      ref = ref.where('type', '==', query.type)
+    }
     const querySnapshot = await ref.get()
     return { posts: parseData(querySnapshot) }
   }
