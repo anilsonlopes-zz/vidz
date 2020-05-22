@@ -3,12 +3,14 @@ import 'firebase/auth'
 import 'firebase/firestore'
 
 const config = {
-  apiKey: 'AIzaSyD_qajacam-RhG_C1H44J06xo6sfUbgZa8',
+  apiKey: 'AIzaSyDwS7AauAFYQBZRAYm32aQzSWD-4jVt2-E',
   authDomain: 'quila-dev.firebaseapp.com',
   databaseURL: 'https://quila-dev.firebaseio.com',
   projectId: 'quila-dev',
   storageBucket: 'quila-dev.appspot.com',
-  messagingSenderId: '898205392296'
+  messagingSenderId: '898205392296',
+  appId: '1:898205392296:web:2c93c81b6cc393d09e919d',
+  measurementId: 'G-RB5RWGXPDR'
 }
 
 if (firebase.apps.length === 0) {
